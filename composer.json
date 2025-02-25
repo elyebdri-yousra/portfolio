@@ -1,0 +1,26 @@
+{
+    "name": "yousra/portfolio",
+    "type": "project",
+    "description": "Application de gestion de frais pour les visiteurs médicaux de l'entreprise",
+    "homepage": "https://github.com/YousraElYebdri",
+    "authors": [
+        {
+            "name": "Yousra EL YEBDRI - BUT MMI",
+            "email": "yousra.elyebdri@icloud.com",
+            "homepage": "https://github.com/YousraElYebdri",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src",
+            "Modeles\\": "src/Modeles",
+            "Controller\\": "src/Controller"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sources\\": "tests"
+        }
+    }
+}

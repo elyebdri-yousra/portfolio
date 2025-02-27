@@ -3,7 +3,7 @@ CREATE TABLE role (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL
 );
-
+ 
 -- Table des utilisateurs
 CREATE TABLE utilisateur (
     id INT AUTO_INCREMENT PRIMARY KEY,

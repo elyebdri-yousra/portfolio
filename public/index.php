@@ -1,13 +1,28 @@
 <?php
 require '../vendor/autoload.php';
-require '../config/define.php';
+require '../config/bdd.php';
+require '../src/Modeles/PdoPortfolio.php';
+require '../src/Controller/UserController.php';
 
+$userController = new UserController(); // Créer une instance du contrôleur
+$utilisateurs = $userController->donneListe(); // Appeler la fonction
 
-session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
 
-require PATH_VIEWS . 'header.php';
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
 
-$action = isset($_GET['action']) ? $_GET['action'] : 'home';
+<body>
+    <section class="donneListe">
+        <?php foreach ($utilisateurs as $user): ?>
+            <li><?= htmlspecialchars($user['nom']); ?> - <?= htmlspecialchars($user['email']); ?></li>
+        <?php endforeach; ?>
+    </section>
+</body>
 
-
-require PATH_VIEWS . 'footer.php';
+</html>

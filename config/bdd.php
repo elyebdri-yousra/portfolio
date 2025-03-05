@@ -4,17 +4,15 @@ function Connexion()
 {
     $hostname = '127.0.0.1';
     $username = 'userPortfolio';
-    $password = '@Hsn7Ysr';
+    $password = '@Hsn7Ysr.';
     $db = 'portfolio';
-    $dsn = "mysql:host=$hostname;dbname=$db";
+    $dsn = "mysql:host=$hostname;dbname=$db;charset=UTF8";
+
     try {
         $bdd = new PDO($dsn, $username, $password);
         $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo "connecxion réussie ! </br>";
-        return $bdd;
+        return $bdd; // ✅ Retourne la connexion au lieu de l'afficher
     } catch (PDOException $e) {
-        echo "Erreur de connection ! </br>";
-        echo $e->getMessage();
+        die("❌ Erreur de connexion à la base de données : " . $e->getMessage()); // Stoppe le script en cas d'erreur
     }
 }
-$db = connexion();

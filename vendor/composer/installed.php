@@ -3,7 +3,7 @@
         'name' => 'yousra/portfolio',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'dd29111b95771a3fa37e00e8d43c3dddb62f2d6c',
+        'reference' => '377950f603d9c65bf78f0709ea5520277ff220fa',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -40,7 +40,7 @@
         'yousra/portfolio' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'dd29111b95771a3fa37e00e8d43c3dddb62f2d6c',
+            'reference' => '377950f603d9c65bf78f0709ea5520277ff220fa',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

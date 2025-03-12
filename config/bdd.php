@@ -1,18 +1,17 @@
 <?php
 
-function Connexion()
-{
-    $hostname = '127.0.0.1';
-    $username = 'userPortfolio';
-    $password = '@Hsn7Ysr.';
-    $db = 'portfolio';
-    $dsn = "mysql:host=$hostname;dbname=$db;charset=UTF8";
+// Je définis les paramètres de connexion à la base de données
+$host = '127.0.0.1';
+$dbname = 'portfolio'; 
+$user = 'userPortfolio';
+$password = '@Hsn7Ysr.';
+$dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
 
-    try {
-        $bdd = new PDO($dsn, $username, $password);
-        $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $bdd; // ✅ Retourne la connexion au lieu de l'afficher
-    } catch (PDOException $e) {
-        die("❌ Erreur de connexion à la base de données : " . $e->getMessage()); // Stoppe le script en cas d'erreur
-    }
+try {
+    // Je crée une instance PDO pour me connecter à la BDD
+    $pdo = new PDO($dsn, $user, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    // En cas d'erreur, j'arrête l'exécution et affiche un message
+    die("Erreur de connexion : " . $e->getMessage());
 }

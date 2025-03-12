@@ -16,11 +16,11 @@ class UserController extends Controller {
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS); //Me permets de vérifier le type de la donnée
             $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $userModel = new Utilisateur(); // Crée un nouvel objet de la classe utilisateur
-            $user = $userModel->getUserByEmail($email); // Récupérer l'email de l'utilisateur
+            $user = $userModel->getUserByEmail($email); // Récupérer l'email de l'utilisateur grâce au model
             // Je vérifie le mot de passe (il est hashé)
             if($user && password_verify($mdp, $user['mdp'])) {
-                session_start();
-                $_SESSION['user'] = $user;
+                session_start();// Crée la session 
+                $_SESSION['user'] = $user; //J'accéde à la variable session, je crée une ligne applée user et j'y stock le user 
                 header("Location: index.php?page=home");
             } else {
                 $error = "Email ou mot de passe incorrect.";
@@ -39,12 +39,16 @@ class UserController extends Controller {
     // Traite l'inscription
     public function create() {
         if(isset($_POST['nom'], $_POST['prenom'], $_POST['email'], $_POST['mdp'])) {
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS); //Me permets de vérifier le type de la donnée
+            $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS); 
+            $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $userModel = new Utilisateur();
             // Je hash le mot de passe
-            $hashedPassword = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
+            $hashedPassword = password_hash($mdp, PASSWORD_DEFAULT);
             // Je définis par défaut le rôle "évaluateur" (par exemple, idRole = 2)
-            $role = 2;
-            $result = $userModel->createUser($_POST['nom'], $_POST['prenom'], $_POST['email'], $hashedPassword, $role);
+            $role = 3;
+            $result = $userModel->createUser($nom, $prenom, $email, $hashedPassword, $role);
             if($result) {
                 $message = "Inscription réussie. En attente de validation par l'administrateur.";
                 $this->render('register', ['message' => $message]);

@@ -8,13 +8,21 @@ require_once 'Controller/Controller.php';
 require_once 'Controller/HomeController.php';
 require_once 'Controller/ProjetController.php';
 require_once 'Controller/UserController.php';
+require_once 'Controller/ContactController.php';
+
+
+$userController = new UserController(); // Déclare UserController une seule fois
 
 // Je récupère la page demandée
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
-switch($page) {
+switch ($page) {
     case 'home':
         $controller = new HomeController();
+        $controller->index();
+        break;
+    case 'contact':
+        $controller = new ContactController();
         $controller->index();
         break;
     case 'projet':
@@ -29,17 +37,13 @@ switch($page) {
             echo "ID du projet non spécifié.";
         }
         break;
-    case 'login':
+    case 'auth':
         $controller = new UserController();
-        $controller->login();
+        $controller->auth();
         break;
     case 'authenticate':
         $controller = new UserController();
         $controller->authenticate();
-        break;
-    case 'register':
-        $controller = new UserController();
-        $controller->register();
         break;
     case 'create_user':
         $controller = new UserController();
@@ -48,6 +52,21 @@ switch($page) {
     case 'logout':
         $controller = new UserController();
         $controller->logout();
+        break;
+    case 'logout_action':
+        $controller = new UserController();
+        $controller->logoutAction();
+        break;
+    case 'projet_add':
+        $controller = new ProjetController();
+        $controller->add();
+        break;
+    case 'manageUsers':
+        $userController->manageUsers();
+        break;
+    case 'updateUser':
+        $userController = new UserController();
+        $userController->updateUser();
         break;
     default:
         echo "Page non trouvée.";

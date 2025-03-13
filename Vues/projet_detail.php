@@ -7,9 +7,12 @@
     <title>Détail du Projet - Mon Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body>
+<body class="bg-[#F7F5EE]">
     <?php include 'header.php'; ?>
     <main class="container mx-auto p-4">
         <h1 class="text-3xl font-bold"><?php echo htmlspecialchars($projet['titre']); ?></h1>

@@ -41,6 +41,13 @@ CREATE TABLE commentaire (
     CONSTRAINT fk_commentaire_rep FOREIGN KEY (idRep) REFERENCES commentaire(id)
 );
 
+-- Table des logiciels
+CREATE TABLE logiciel (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomLogiciel VARCHAR(255) NOT NULL,
+    urlimgL VARCHAR(255)
+);
+
 -- Table des logiciels utilisés
 CREATE TABLE logicielUse (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,9 +57,8 @@ CREATE TABLE logicielUse (
     CONSTRAINT fk_logicielUse_logiciel FOREIGN KEY (idLogiciel) REFERENCES logiciel(id)
 );
 
--- Table des logiciels
-CREATE TABLE logiciel (
+-- Table des images 
+CREATE TABLE images (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nomLogiciel VARCHAR(255) NOT NULL,
     urlimgL VARCHAR(255)
 );

@@ -1,11 +1,10 @@
 <?php
+require_once 'config/bdd.php'; // Inclusion de la connexion
 
 class Model {
     protected $pdo;
 
     public function __construct() {
-        // J'utilise la variable globale $pdo initialisée dans config/bdd.php
-        global $pdo;
-        $this->pdo = $pdo;
+        $this->pdo = Database::getInstance(); // Récupérer la connexion unique à PDO
     }
 }

@@ -1,17 +1,28 @@
 <?php
 
-// Je définis les paramètres de connexion à la base de données
-$host = '127.0.0.1';
-$dbname = 'portfolio'; 
-$user = 'userPortfolio';
-$password = '@Hsn7Ysr.';
-$dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
+class Database {
+    private static $instance = null;
+    private $pdo;
 
-try {
-    // Je crée une instance PDO pour me connecter à la BDD
-    $pdo = new PDO($dsn, $user, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    // En cas d'erreur, j'arrête l'exécution et affiche un message
-    die("Erreur de connexion : " . $e->getMessage());
+    private function __construct() {
+        $host = '127.0.0.1';
+        $dbname = 'portfolio'; 
+        $user = 'userPortfolio';
+        $password = '@Hsn7Ysr.';
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
+
+        try {
+            $this->pdo = new PDO($dsn, $user, $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            die("Erreur de connexion : " . $e->getMessage());
+        }
+    }
+
+    public static function getInstance() {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance->pdo;
+    }
 }

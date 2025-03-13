@@ -1,0 +1,23 @@
+body{
+    background-color: #F7F5EE;
+    max-width: 1440px;
+}
+h1{
+    font-family: 'Braah One', sans-serif;
+    color: #DB9ECF;
+}
+h2{
+    font-family: 'Braah One', sans-serif;
+    color: #DB9ECF;
+}
+p {
+    font-family:'Cantarell', sans-serif;
+}
+label{
+    font-family:'Cantarell', sans-serif;
+}
+
+button{
+    font-family:'Cantarell', sans-serif;
+    font-size: 15px;
+}

@@ -7,4 +7,6 @@ class Model {
     public function __construct() {
         $this->pdo = Database::getInstance(); // Récupérer la connexion unique à PDO
     }
+
+    
 }

@@ -9,9 +9,9 @@ class Utilisateur extends Model
     public function getUserByEmail($email)
     {
         $req = $this->pdo->prepare("SELECT * FROM utilisateur WHERE email = :email");
-        $req->bindParam(':email', $email, PDO::PARAM_STR);
+        $req->bindParam(':email', $email, PDO::PARAM_STR); // filtrer la donnée pour la req preparer pour éviter les injections
         $req->execute();
-        return $req->fetch(PDO::FETCH_ASSOC);
+        return $req->fetch(PDO::FETCH_ASSOC); 
     }
 
     // J'insère un nouvel utilisateur (inscription d'un évaluateur)

@@ -46,8 +46,9 @@
                                 <form action="index.php?page=updateUser" method="post" class="flex space-x-2">
                                     <input type="hidden" name="user_id" value="<?= $user['id']; ?>">
                                     <select name="new_role" class="p-4 border rounded-md focus:ring focus:ring-blue-300 ">
+                                        <option value="3">Attente</option>
                                         <option value="2">Correcteur</option>
-                                        <option value="1">Admin</option>
+                                        <option value="4">Refuser</option>
                                     </select>
                                     <button type="submit"
                                         class="bg-[#DB9ECF] hover:bg-[#c085b7] text-white px-4 py-2 rounded-md transition duration-200 ">

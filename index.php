@@ -1,5 +1,7 @@
 <?php
 
+//routeur frontal 
+
 // J'inclus la configuration
 require_once 'config/bdd.php';
 

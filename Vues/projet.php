@@ -29,55 +29,60 @@
 
         <?php if (!empty($projets)) : ?>
             <ul>
-                <?php foreach ($projets as $projet) : ?>
-                    <li class="border p-2 my-2">
-                        <h2 class="text-2xl"><?php echo htmlspecialchars($projet['titre']); ?></h2>
-                        <p><?php echo htmlspecialchars($projet['description']); ?></p>
-                        <a href="index.php?page=projet_show&id=<?php echo $projet['id']; ?>" class="text-blue-500">Voir le projet</a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php else : ?>
-            <p>Aucun projet disponible.</p>
-        <?php endif; ?>
+            <?php foreach ($projets as $projet) : ?>
+                    <li class=" border p-2 my-2">
+            <h2 class="text-2xl"><?php echo htmlspecialchars($projet['titre']); ?></h2>
+            <?php if (!empty($projet['urlimg'])): ?>
+                <img src="<?php echo htmlspecialchars($projet['urlimg']); ?>" alt="<?php echo htmlspecialchars($projet['titre']); ?>" class="my-4">
+            <?php endif; ?>
+            <a href="index.php?page=projet_show&id=<?php echo $projet['id']; ?>" class="text-blue-500">Voir le projet</a>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    <?php else : ?>
+        <p>Aucun projet disponible.</p>
+    <?php endif; ?>
 
-        <?php if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) : ?>
-            <h2 class="text-3xl font-bold mt-6 my-8">Ajouter un projet</h2>
-            <form action="index.php?page=projet_add" method="POST" class="bg-white p-4 rounded-lg shadow-md w-[50%]">
-                <label class="block mt-2">Titre du projet :</label>
-                <input type="text" name="titre" required class="w-full p-2 border rounded">
+    <?php if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) : ?>
+        <h2 class="text-3xl font-bold mt-6 my-8">Ajouter un projet</h2>
+        <form action="index.php?page=projet_add" method="POST" class="bg-white p-4 rounded-lg shadow-md w-[50%]">
+            <label class="block mt-2">Titre du projet :</label>
+            <input type="text" name="titre" required class="w-full p-2 border rounded">
 
-                <label class="block mt-2">Description :</label>
-                <textarea name="description" required class="w-full p-2 border rounded"></textarea>
+            <label class="block mt-2">Images :</label>
+            <input type="file" name="images[]" required multiple class="w-full p-2 border rounded">
 
-                <label class="block mt-2">Année de création (BUT) :</label>
-                <input type="number" name="annee_but" required class="w-full p-2 border rounded">
+            <label class="block mt-2">Description :</label>
+            <textarea name="description" required class="w-full p-2 border rounded"></textarea>
 
-                <label class="block mt-2">Date d'ajout :</label>
-                <input type="date" name="date" required class="w-full p-2 border rounded">
+            <label class="block mt-2">Année de création (BUT) :</label>
+            <input type="number" name="annee_but" required class="w-full p-2 border rounded">
 
-                <label class="block mt-2">Apprentissage critique :</label>
-                <input type="text" name="apprentissage" class="w-full p-2 border rounded">
+            <label class="block mt-2">Date d'ajout :</label>
+            <input type="date" name="date" required class="w-full p-2 border rounded">
 
-                <label class="block mt-2">Compétence associée :</label>
-                <input type="text" name="competence" class="w-full p-2 border rounded">
+            <label class="block mt-2">Apprentissage critique :</label>
+            <input type="text" name="apprentissage" class="w-full p-2 border rounded">
 
-                <label class="block mt-2">Type de projet :</label>
-                <select name="type" required class="w-full p-2 border rounded">
-                    <option value="infographie">Infographie</option>
-                    <option value="vidéo">Production audio visuelle</option>
-                    <option value="programme">Développement</option>
-                    <option value="texte">Communication</option>
-                </select>
+            <label class="block mt-2">Compétence associée :</label>
+            <input type="text" name="competence" class="w-full p-2 border rounded">
 
-                <label class="block mt-2">Argumentaire :</label>
-                <textarea name="argumentaire" required class="w-full p-2 border rounded"></textarea>
+            <label class="block mt-2">Type de projet :</label>
+            <select name="type" required class="w-full p-2 border rounded">
+                <option value="infographie">Infographie</option>
+                <option value="vidéo">Production audio visuelle</option>
+                <option value="programme">Développement</option>
+                <option value="texte">Communication</option>
+            </select>
 
-                <button type="submit" class="bg-[#DB9ECF] text-white p-5 w-full rounded-xl hover:bg-[#c085b7] transition-colors mt-6 my-8">Ajouter</button>
-            </form>
-        <?php else : ?>
-            <p> </p>
-        <?php endif; ?>
+            <label class="block mt-2">Argumentaire :</label>
+            <textarea name="argumentaire" required class="w-full p-2 border rounded"></textarea>
+
+            <button type="submit" class="bg-[#DB9ECF] text-white p-5 w-full rounded-xl hover:bg-[#c085b7] transition-colors mt-6 my-8">Ajouter</button>
+        </form>
+    <?php else : ?>
+        <p> </p>
+    <?php endif; ?>
     </main>
     <footer class="mt-auto">
         <?php include 'footer.php'; ?>

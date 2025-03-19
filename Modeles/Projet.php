@@ -24,7 +24,7 @@ class Projet extends Model {
         ");
     
         return $req->execute([
-            $titre, $description, $urlimg, $date, $argumentaire, $idUser
+            $titre, $description, $urlimg, $date, $annee_but, $apprentissage, $competence, $type, $argumentaire, $commentaires, $idUser
         ]);
     }
 

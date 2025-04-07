@@ -11,7 +11,7 @@ require_once 'Controller/HomeController.php';
 require_once 'Controller/ProjetController.php';
 require_once 'Controller/UserController.php';
 require_once 'Controller/ContactController.php';
-
+require_once 'Controller/AboutController.php';
 
 $userController = new UserController(); // Déclare UserController une seule fois
 
@@ -25,6 +25,10 @@ switch ($page) {
         break;
     case 'contact':
         $controller = new ContactController();
+        $controller->index();
+        break;
+    case 'about':
+        $controller = new AboutController();
         $controller->index();
         break;
     case 'projet':

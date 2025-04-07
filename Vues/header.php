@@ -11,7 +11,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     <!-- Navigation principale -->
     <div class="flex space-x-10">
       <a href="index.php?page=home" class="font-bold">Accueil</a>
-      <a href="index.php?page=projet" class="font-bold">À propos</a>
+      <a href="index.php?page=about" class="font-bold">À propos</a>
       <a href="index.php?page=projet" class="font-bold">Projets</a>
       <a href="index.php?page=contact" class="font-bold">Contact</a>
     </div>

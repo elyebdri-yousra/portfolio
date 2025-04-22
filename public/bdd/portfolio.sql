@@ -1,3 +1,7 @@
+CREATE DATABASE portfolio;
+USE portfolio;
+
+
 -- Table des rôles
 CREATE TABLE role (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -15,18 +19,30 @@ CREATE TABLE utilisateur (
     CONSTRAINT fk_utilisateur_role FOREIGN KEY (idRole) REFERENCES role(id)
 );
 
+
 -- Table des projets
 CREATE TABLE projet (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    titre VARCHAR(255) NOT NULL,  -- Nom projet 
+    titre VARCHAR(700) NOT NULL,  -- Nom projet 
     description TEXT,     -- Description projet
-    urlimg VARCHAR(255),
     date DATE,            -- Date de publication 
-    dateCrea DATETIME,    -- Date de création projet
-    duree INT,            -- Durée 
+    dateCrea INT(4),    -- Date de création projet 
+    apprentissageCritique TEXT,
+    competenceAssociee VARCHAR(255),
+    typeProjet VARCHAR(255),
+    argumentaire TEXT,
     idUser INT,           -- Référence à l'utilisateur qui a créé le projet ( c'est un plus )
-    pbSl VARCHAR(255),    -- Problèmes Rencontrés et Solutions Apportées
     CONSTRAINT fk_projet_utilisateur FOREIGN KEY (idUser) REFERENCES utilisateur(id)
+);
+
+-- Table pour enregistrer les images
+CREATE TABLE projet_img(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    img_path VARCHAR(255) NOT NULL,
+    id_projet INT NOT NULL,
+    CONSTRAINT fk_image_projet FOREIGN KEY (id_projet) REFERENCES projet(id) ON DELETE CASCADE
+
 );
 
 -- Table des commentaires
@@ -34,11 +50,10 @@ CREATE TABLE commentaire (
     id INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,           -- Référence à l'utilisateur qui commente
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    idRep INT,            -- Référence à un commentaire parent (pour les réponses), peut être NULL
     idProjet INT,         -- Référence au projet commenté
+    commentaire TEXT,
     CONSTRAINT fk_commentaire_utilisateur FOREIGN KEY (userId) REFERENCES utilisateur(id),
-    CONSTRAINT fk_commentaire_projet FOREIGN KEY (idProjet) REFERENCES projet(id),
-    CONSTRAINT fk_commentaire_rep FOREIGN KEY (idRep) REFERENCES commentaire(id)
+    CONSTRAINT fk_commentaire_projet FOREIGN KEY (idProjet) REFERENCES projet(id) ON DELETE CASCADE
 );
 
 -- Table des logiciels
@@ -52,8 +67,9 @@ CREATE TABLE logiciel (
 CREATE TABLE logicielUse (
     id INT AUTO_INCREMENT PRIMARY KEY,
     idProjet INT,
+    url_img VARCHAR(255),
     idLogiciel INT,
-    CONSTRAINT fk_logicielUse_projet FOREIGN KEY (idProjet) REFERENCES projet(id),
+    CONSTRAINT fk_logicielUse_projet FOREIGN KEY (idProjet) REFERENCES projet(id) ON DELETE CASCADE,
     CONSTRAINT fk_logicielUse_logiciel FOREIGN KEY (idLogiciel) REFERENCES logiciel(id)
 );
 
@@ -62,3 +78,10 @@ CREATE TABLE images (
     id INT AUTO_INCREMENT PRIMARY KEY,
     urlimgL VARCHAR(255)
 );
+
+INSERT INTO role(nom) VALUES ('Administrateur');
+INSERT INTO role(nom) VALUES ('Evaluateur');
+INSERT INTO role(nom) VALUES ('En attente');
+INSERT INTO role(nom) VALUES ('Refusé');
+
+INSERT INTO utilisateur(nom,prenom,email,mdp,idRole) VALUES ('Yousra', 'El Yebdri', 'admin@dev.fr','$2y$10$yb8MmqGrC4XcnrIeHkNnR.KwhCfo3Ifhe4jhA4BIxyxdAzlliayyG', 1);

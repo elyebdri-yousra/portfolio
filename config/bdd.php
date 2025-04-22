@@ -1,5 +1,7 @@
 <?php
 
+
+
 class Database {
     private static $instance = null;
     private $pdo;
@@ -7,8 +9,8 @@ class Database {
     private function __construct() {
         $host = '127.0.0.1';
         $dbname = 'portfolio'; 
-        $user = 'userPortfolio';
-        $password = '@Hsn7Ysr.';
+        $user = 'dev';
+        $password = 'root';
         $dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
 
         try {

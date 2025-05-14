@@ -1,7 +1,13 @@
 <main class="flex-grow flex items-center justify-center">
-    <div class="container mx-auto p-6 flex flex-col md:flex-row gap-10">
+    <div class="container mx-auto p-6 w-full max-w-3xl">
+        <!-- Onglets -->
+        <div class="flex justify-center mb-6">
+            <button id="tab-login" class="px-4 py-2 font-semibold text-[#DB9ECF] border-b-2 border-[#DB9ECF]">Connexion</button>
+            <button id="tab-register" class="px-4 py-2 font-semibold text-gray-500">Inscription</button>
+        </div>
+
         <!-- Formulaire de Connexion -->
-        <div class="w-full md:w-1/2">
+        <div id="login-form">
             <h2 class="text-3xl font-bold text-center mb-4 text-[#DB9ECF]">Connexion</h2>
             <section class="border border-gray-200 bg-white shadow-lg p-8 rounded-xl">
                 <?php if (isset($errorConnexion)): ?>
@@ -20,12 +26,11 @@
                         Se connecter
                     </button>
                 </form>
-                <!-- <p class="mt-4 text-center text-sm">Pas encore inscrit ? <a href="index.php?page=register" class="text-blue-500 hover:underline">Inscription</a></p> -->
             </section>
         </div>
 
         <!-- Formulaire d'Inscription -->
-        <div class="w-full md:w-1/2">
+        <div id="register-form" class="hidden">
             <h2 class="text-3xl font-bold text-center mb-4 text-[#DB9ECF]">Inscription Évaluateur</h2>
             <section class="border border-gray-200 bg-white shadow-lg p-8 rounded-xl">
                 <?php if (isset($message)): ?>
@@ -61,3 +66,27 @@
         </div>
     </div>
 </main>
+
+<!-- JavaScript -->
+<script>
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    tabLogin.addEventListener('click', () => {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        tabLogin.classList.add('text-[#DB9ECF]', 'border-b-2', 'border-[#DB9ECF]');
+        tabRegister.classList.remove('text-[#DB9ECF]', 'border-b-2', 'border-[#DB9ECF]');
+        tabRegister.classList.add('text-gray-500');
+    });
+
+    tabRegister.addEventListener('click', () => {
+        registerForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+        tabRegister.classList.add('text-[#DB9ECF]', 'border-b-2', 'border-[#DB9ECF]');
+        tabLogin.classList.remove('text-[#DB9ECF]', 'border-b-2', 'border-[#DB9ECF]');
+        tabLogin.classList.add('text-gray-500');
+    });
+</script>

@@ -8,9 +8,9 @@
             <hr class="flex-grow border-t-1 border-stone-700 ">
             <p class="text-5xl text-stone-700">2025</p>
         </div>
-        <p class="text-2xl text-gray-800">
+        <p class="text-2xl text-gray-800 mb-10">
             <?php echo $message; ?>
         </p>
-        <button href="#" class="bg-[#DB9ECF] text-white p-5 w-[50%] rounded-xl hover:bg-[#c085b7] transition-colors mt-6 my-8">En savoir plus</button>
+        <a href="index.php?page=about" class="bg-[#DB9ECF] text-white p-5 w-[50%] rounded-xl hover:bg-[#c085b7] transition-colors mt-20 my-8">En savoir plus</a>
     </div>
 </main>

@@ -9,8 +9,8 @@ class Database {
     private function __construct() {
         $host = '127.0.0.1';
         $dbname = 'portfolio'; 
-        $user = 'dev';
-        $password = 'root';
+        $user = 'hsn7sr';
+        $password = '@Hsn9Ysr.';
         $dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
 
         try {

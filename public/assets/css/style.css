@@ -9,6 +9,7 @@ h1{
 h2{
     font-family: 'Braah One', sans-serif;
     color: #DB9ECF;
+    
 }
 p {
     font-family:'Cantarell', sans-serif;
@@ -34,4 +35,8 @@ th.cursor-pointer:hover {
     background-color: #567276;
     transition: background-color 0.2s;
 }
+
+    #carousel img {
+        min-width: 100%;
+    }
 

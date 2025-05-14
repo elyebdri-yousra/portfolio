@@ -38,7 +38,7 @@ class LogicielController extends Controller
         // Si tu te demande quel type de boucle il faut utiliser, ici il est plus intelligent d'utiliser une boucle for et pas une foreach. Comme j'accèdes à des données qui sont dans un tableau, ca m'évitera de faire bcp de boucle
         $nom_fichier = $files_paths . basename($_FILES["image"]["name"]); // nom_fichier c'est le nom de ton
         $type_fichier = strtolower(pathinfo($nom_fichier, PATHINFO_EXTENSION)); // Permet de prendre le type de fichier pour vérifier si c'est une image
-        if ($type_fichier == "jpg" || $type_fichier == "png" || $type_fichier == "jpeg" || $type_fichier == "svg" || $type_fichier == "ico") { // On vérifie le type de fichier
+        if ($type_fichier == "jpg" || $type_fichier == "png" || $type_fichier == "jpeg" || $type_fichier == "svg" || $type_fichier == "ico" || $type_fichier == "webp") { // On vérifie le type de fichier
             if (!file_exists($nom_fichier)) {
                 move_uploaded_file($_FILES["image"]["tmp_name"], $nom_fichier);
                 $logiciel->addLogiciel($name, $nom_fichier);

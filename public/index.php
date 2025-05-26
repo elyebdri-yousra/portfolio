@@ -59,6 +59,24 @@ switch ($page) {
             $controller->render('error');
         }
         break;
+    case 'deleteUser':
+        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
+            $controller = new UserController();
+            $controller->deleteUser();
+        } else {
+            $controller = new ErrorController();
+            $controller->render('error');
+        }
+        break;
+    case 'updateUserInfo':
+        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
+            $controller = new UserController();
+            $controller->updateUserInfo();
+        } else {
+            $controller = new ErrorController();
+            $controller->render('error');
+        }
+        break;
     case 'projet_show':
         if (isset($_GET['id'])) {
             $controller = new ProjetController();

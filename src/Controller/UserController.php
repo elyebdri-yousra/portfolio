@@ -22,6 +22,20 @@ class UserController extends Controller
     }
 
 
+    public function deleteUser()
+    {
+        if (!isset($_SESSION['user']) || !isset($_SESSION['user']['idRole']) || $_SESSION['user']['idRole'] != 1) {
+            $this->error->index();
+        } else {
+            $id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT); //Me permets de vérifier le type de la donnée
+            if ($id != 1) {
+                $userModel = new Utilisateur();
+                $userModel->deleteUser($id);
+            }
+            header("Location: index.php?page=manageUsers");
+        }
+    }
+
 
     public function auth()
     {
@@ -84,7 +98,7 @@ class UserController extends Controller
                     $this->render('auth', ['error' => $error]);
                 }
             } catch (Exception $e) {
-                if($e->getCode() == 23000){
+                if ($e->getCode() == 23000) {
                     $this->render('auth', ['error' => "L'adresse mail est déjà utilisée"]);
                 }
             }
@@ -100,12 +114,40 @@ class UserController extends Controller
             header("Location: index.php");
             exit();
         }
-
         $userModel = new Utilisateur();
-        $users = $userModel->getPendingUsers();
-        $this->render('admin/manage_users', ['users' => $users]);
+        $waiters = $userModel->getPendingUsers(); // Ceux en attente
+        $users = $userModel->getAllUsersWithRole();
+        $roles = $userModel->getAllRoles();
+        $this->render('admin/manage_users', ['waiters' => $waiters, 'users' => $users, 'roles' => $roles]);
     }
 
+    //Met tout à jour
+    public function updateUserInfo()
+    {
+        if (!isset($_SESSION['user']) || !isset($_SESSION['user']['idRole']) || $_SESSION['user']['idRole'] != 1) {
+            header("Location: index.php");
+            exit();
+        }
+
+        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT); //Me permets de vérifier le type de la donnée
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS); //Me permets de vérifier le type de la donnée
+        $mdp = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $id_role = filter_input(INPUT_POST, 'new_role', FILTER_SANITIZE_NUMBER_INT);
+
+        $hashedPassword = password_hash($mdp, PASSWORD_DEFAULT);
+        $userModel = new Utilisateur();
+
+        $userModel->updateUser($user_id,$nom,$prenom,$email,$id_role);
+        if($mdp != ""){
+            $userModel->changeUserPassword($user_id,$hashedPassword);
+        }
+
+        header("Location: index.php?page=manageUsers");
+    }
+
+    //Met a jour que le role
     public function updateUser()
     {
         // Vérifie si l'utilisateur est bien un admin
@@ -117,14 +159,9 @@ class UserController extends Controller
         if (isset($_POST['user_id'], $_POST['new_role'])) {
             $userId = intval($_POST['user_id']);
             $newRole = intval($_POST['new_role']);
-
             $userModel = new Utilisateur();
-            if ($userModel->updateUserRole($userId, $newRole)) {
-                $message = "Rôle mis à jour avec succès.";
-            } else {
-                $message = "Erreur lors de la mise à jour du rôle.";
-            }
-            $this->render('admin/manage_users', ['message' => $message, 'users' => $userModel->getPendingUsers()]);
+            $userModel->updateUserRole($userId, $newRole);
+            header("Location: index.php?page=manageUsers");
         }
     }
 

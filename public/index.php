@@ -85,7 +85,7 @@ switch ($page) {
             $error->index();
         }
         break;
-    // A modifier plus tard, ça mé déplait fort
+    // A modifier plus tard, ça me déplait fort
     case 'supprimer':
         if (isset($_GET['id'])) {
             if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {

@@ -1,108 +1,116 @@
-<main class="container mx-auto p-4 max-w-6xl flex flex-col font-[Cantarell] overflow-y-scroll scrollbar-none" role="main" aria-label="Détail du projet sélectionné">
+<main class="flex-1 container mx-auto p-4 pb-24 max-w-[1440px] font-[Cantarell]" role="main" aria-label="Détail du projet sélectionné">
     <!-- Titre et bouton retour -->
-    <div class="w-full">
-        <a href="index.php?page=projet#liste" class="bg-[#DB9ECF] font-[Cantarell] text-lg text-white px-16 py-1 rounded-md hover:bg-[#c085b7] transition-colors" aria-label="Revenir à la liste des projets">
+    <div class="flex flex-row justify-between items-center w-full mb-4">
+        <h1 class="text-4xl font-bold"><?php echo html_entity_decode($projet['titre']); ?></h1>
+        <a href="index.php?page=projet#liste"
+            class="bg-[#DB9ECF] font-[Cantarell] text-lg text-white px-6 py-2 rounded-md hover:bg-[#c085b7] transition-colors"
+            aria-label="Revenir à la liste des projets">
             Retour
         </a>
     </div>
 
-    <div class="grid grid-cols-1 gap-10 mt-6">
-        <!-- Bloc principal avec image et infos projet -->
-        <div class="w-full h-[470px] space-x-6 flex flex-row">
-            <div class="bg-[#DB9ECF] rounded-xl h-full w-2/5 relative overflow-hidden">
-                <div id="carousel" class="w-full h-full flex">
-                    <?php foreach ($images as $image) : ?>
-                        <div class="swiper-slide">
-                            <img
-                                src="<?php echo html_entity_decode($image['img_path']); ?>"
-                                alt="Visuel du projet : <?php echo html_entity_decode($projet['titre']); ?>"
-                                class="zoomable-img w-full h-full object-contain bg-[#F7F5EE]">
-                        </div>
-                    <?php endforeach; ?>
+    <!-- Carrousel d'images -->
+    <div class="bg-[#DB9ECF] rounded-xl w-full relative overflow-hidden h-[470px]">
+        <div id="carousel" class="w-[1440px] h-full flex">
+            <?php foreach ($images as $image) : ?>
+                <div class="swiper-slide">
+                    <img
+                        src="<?php echo html_entity_decode($image['img_path']); ?>"
+                        alt="Visuel du projet : <?php echo html_entity_decode($projet['titre']); ?>"
+                        class="zoomable-img w-full h-full object-contain bg-[#F7F5EE]">
                 </div>
-                <button onclick="moveCarousel(-1)" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-black rounded-full p-2">&lt;</button>
-                <button onclick="moveCarousel(1)" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-black rounded-full p-2">&gt;</button>
-            </div>
+            <?php endforeach; ?>
+        </div>
+        <button onclick="moveCarousel(-1)" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-black rounded-full p-2">&lt;</button>
+        <button onclick="moveCarousel(1)" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-black rounded-full p-2">&gt;</button>
+    </div>
 
-            <div class="rounded-xl h-full w-3/5 space-y-4">
-                <h1 class="text-4xl pt-2 ml-1"><?php echo html_entity_decode($projet['titre']); ?></h1>
-                <p class="ml-1 text-left leading-7 max-h-48 overflow-y-scroll scrollbar-none"><?php echo html_entity_decode($projet['description']); ?></p>
-
-                <div class="flex gap-2 mb-4 overflow-y-scroll scrollbar-none">
+    <!-- Grille 2 colonnes -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+        <!-- Colonne gauche -->
+        <div class="space-y-6">
+            <div class="rounded-xl bg-white p-4 shadow">
+                <h3 class="text-lg font-semibold mb-2">Description du projet</h3>
+                <p class="leading-7 mb-5"><?php echo html_entity_decode($projet['description']); ?></p>
+                <h3 class="text-lg font-semibold mb-2">Logiciels utilisés & Dates</h3>
+                <div class="flex flex-wrap gap-4 mb-2">
                     <?php foreach ($logiciels as $logiciel) { ?>
-                        <div class="min-w-24 h-12 flex items-center justify-center text-sm">
+                        <div class="h-12 flex items-center justify-center">
                             <img
                                 src="<?php echo html_entity_decode($logiciel['url_img']); ?>"
-                                alt="Logo du logiciel <?php echo html_entity_decode($logiciel['nomLogiciel']); ?>"
+                                alt="Logo <?php echo html_entity_decode($logiciel['nomLogiciel']); ?>"
                                 class="max-h-12">
                         </div>
                     <?php } ?>
-                    <div class="min-w-24 h-12 flex items-center justify-center text-sm"><?php echo html_entity_decode($projet['date']); ?></div>
-                    <div class="min-w-24 h-12 flex items-center justify-center text-sm"><?php echo html_entity_decode($projet['dateCrea']); ?></div>
                 </div>
-
-                <?php if (isset($_SESSION['user']) && (($_SESSION['user']['idRole'] == 1) || ($_SESSION['user']['idRole'] == 2))) { ?>
-                    <div>
-                        <p class="font-bold">Ressources :</p>
-                        <ul class="list-disc list-inside text-sm text-gray-700">
-                            <li>Lorem ipsum dolor sit amet.</li>
-                            <li>Nulla facilisi.</li>
-                            <li>Fusce auctor sapien.</li>
-                            <li>Integer tincidunt.</li>
-                        </ul>
-                    </div>
-                <?php } ?>
+                <p class="text-sm"><strong>Date :</strong> <?php echo html_entity_decode($projet['date']); ?></p>
+                <p class="text-sm"><strong>Date de création :</strong> <?php echo html_entity_decode($projet['dateCrea']); ?></p>
             </div>
+
+            <?php if (isset($_SESSION['user']) && $_SESSION['user']['idRole'] == 1) { ?>
+                <div class="rounded-xl bg-white p-4 shadow">
+                    <h3 class="text-lg font-semibold mb-2">Ressources</h3>
+                    <ul class="list-disc list-inside text-sm text-gray-700">
+                        <li>Lorem ipsum dolor sit amet.</li>
+                        <li>Nulla facilisi.</li>
+                        <li>Fusce auctor sapien.</li>
+                        <li>Integer tincidunt.</li>
+                    </ul>
+                </div>
+            <?php } ?>
+            <div class="rounded-xl bg-white p-4 shadow">
+                <h3 class="text-lg font-semibold mb-2">Problèmes rencontrés et solutions apportées</h3>
+                <p class="leading-7"><?php echo html_entity_decode($projet['argumentaire']); ?></p>
+            </div>
+
         </div>
 
-        <?php if (isset($_SESSION['user']) && (($_SESSION['user']['idRole'] == 1) || ($_SESSION['user']['idRole'] == 2))) { ?>
-            <div class="w-full flex flex-col h-[500px] space-y-4">
-                <h2 class="text-2xl font-semibold">Vous êtes évaluateur</h2>
-                <div class="w-full h-[470px] space-x-6 flex flex-row">
-                    <div class="rounded-xl h-full w-2/5 space-y-6 relative overflow-hidden">
-                        <h3 class="text-black font-[Cantarell] font-semibold">Problèmes Rencontrés et Solutions Apportées</h3>
-                        <p class="text-left leading-7 max-h-[280px] overflow-y-scroll scrollbar-none"><?php echo html_entity_decode($projet['argumentaire']); ?></p>
-                    </div>
+        <!-- Colonne droite -->
+        <div class="space-y-6">
 
-                    <div class="rounded-xl h-full w-3/5 space-y-3 bg-[#FFFFFF] shadow-md" id="commentaire">
-                        <h3 class="text-xl pt-2 mt-2 font-[Cantarell] h-[50px] text-center font-semibold">Commentaires</h3>
-                        <div id="commentaires-container" aria-live="polite" class="grid grid-cols-1 gap-2 mt-6 w-full h-[300px] overflow-y-scroll scrollbar-none">
-                            <?php if (!empty($commentaires)) : ?>
-                                <?php foreach ($commentaires as $commentaire) : ?>
-                                    <div class="w-full flex items-start my-1 <?php echo $user_id == $commentaire['userId'] ? 'justify-end' : 'justify-start'; ?>">
-                                        <div class="bg-[#D9D9D9] min-w-[50%] max-w-[80%] p-1 rounded-sm <?php echo $user_id == $commentaire['userId'] ? 'mr-6' : 'ml-6'; ?>">
-                                            <div class="flex items-center justify-between">
-                                                <h4><?php echo $commentaire['prenom'] . ' ' . $commentaire['nom'] ?></h4>
-                                                <h4><?php echo $commentaire['createdAt'] ?></h4>
-                                            </div>
-                                            <p class="w-full break-all whitespace-normal"><?php echo ($commentaire['commentaire'] ?? ''); ?></p>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else : ?>
-                                <p class="text-gray-500 h-full w-full text-center">Aucun commentaire disponible.</p>
-                            <?php endif; ?>
-                        </div>
-
-                        <form method="POST" action="index.php?page=addCommentaire#commentaire" class="flex items-center justify-center w-full h-[70px]">
-                            <input type="hidden" name="id" value="<?php echo $projet['id'] ?>">
-                            <label for="commentaire" class="sr-only">Votre commentaire</label>
-                            <input
-                                type="text"
-                                name="commentaire"
-                                id="commentaire"
-                                required
-                                class="w-[75%] h-[70%] bg-[#D9D9D9] indent-2 rounded-l-sm border-l-2 border-y-2 border-[#DB9ECF] focus:outline-none peer"
-                                placeholder="Écrire votre commentaire">
-                            <input
-                                type="submit"
-                                value="Envoyer"
-                                class="w-[15%] h-[70%] bg-[#DB9ECF] cursor-pointer hover:bg-white hover:text-[#DB9ECF] font-semibold text-white rounded-r-sm border-l border-2 duration-200 border-[#DB9ECF]">
-                        </form>
-                    </div>
-                </div>
+            <div class="rounded-xl bg-white p-4 shadow">
+                <h3 class="text-lg font-semibold mb-2">Argumentaire</h3>
+                <p class="leading-7"><?php echo html_entity_decode($projet['argumentaire']); ?></p>
             </div>
-        <?php } ?>
+            <?php if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1 || $_SESSION['user']['idRole'] == 2)) { ?>
+                <div class="rounded-xl bg-white p-4 shadow" id="commentaire">
+                    <h3 class="text-xl font-[Cantarell] text-center font-semibold mb-4">Commentaires</h3>
+                    <div id="commentaires-container" aria-live="polite" class="space-y-2 h-[300px] overflow-y-scroll scrollbar-none">
+                        <?php if (!empty($commentaires)) : ?>
+                            <?php foreach ($commentaires as $commentaire) : ?>
+                                <div class="flex <?php echo $user_id == $commentaire['userId'] ? 'justify-end' : 'justify-start'; ?>">
+                                    <div class="bg-[#D9D9D9] max-w-[80%] p-2 rounded-md">
+                                        <div class="flex justify-between mb-1 text-sm font-semibold">
+                                            <span><?php echo $commentaire['prenom'] . ' ' . $commentaire['nom']; ?></span>
+                                            
+                                        </div>
+                                        <p class="text-sm"><?php echo $commentaire['commentaire'] ?? ''; ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <p class="text-gray-500 text-center">Aucun commentaire disponible.</p>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Formulaire -->
+                    <form method="POST" action="index.php?page=addCommentaire#commentaire" class="flex items-center justify-center mt-4">
+                        <input type="hidden" name="id" value="<?php echo $projet['id']; ?>">
+                        <input
+                            type="text"
+                            name="commentaire"
+                            id="commentaire"
+                            required
+                            class="w-[75%] h-10 bg-[#D9D9D9] indent-2 rounded-l-sm border border-[#DB9ECF] focus:outline-none"
+                            placeholder="Écrire votre commentaire">
+                        <input
+                            type="submit"
+                            value="Envoyer"
+                            class="w-[25%] h-10 bg-[#DB9ECF] cursor-pointer hover:bg-white hover:text-[#DB9ECF] font-semibold text-white rounded-r-sm border border-[#DB9ECF] transition-colors duration-200">
+                    </form>
+                </div>
+            <?php } ?>
+        </div>
     </div>
 </main>
 
@@ -138,7 +146,9 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('commentaires-container');
-        container.scrollTop = container.scrollHeight;
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
     });
 </script>
 

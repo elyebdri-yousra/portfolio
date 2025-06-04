@@ -23,6 +23,10 @@ class Image extends Model {
         return true;
     }
 
-
+    public function deleteUniqueImageByProjectId($id,$nom){
+        $req = $this->pdo->prepare("DELETE FROM projet_img WHERE id_projet = ? and nom = ?");
+        $req->execute([$id, $nom]);
+        return true;
+    }
 
 }

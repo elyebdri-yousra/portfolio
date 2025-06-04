@@ -28,7 +28,6 @@ CREATE TABLE projet (
     date DATE,            -- Date de publication 
     dateCrea INT(4),    -- Date de création projet 
     apprentissageCritique TEXT,
-    competenceAssociee VARCHAR(255),
     typeProjet VARCHAR(255),
     argumentaire TEXT,
     idUser INT,           -- Référence à l'utilisateur qui a créé le projet ( c'est un plus )
@@ -52,7 +51,7 @@ CREATE TABLE commentaire (
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     idProjet INT,         -- Référence au projet commenté
     commentaire TEXT,
-    CONSTRAINT fk_commentaire_utilisateur FOREIGN KEY (userId) REFERENCES utilisateur(id),
+    CONSTRAINT fk_commentaire_utilisateur FOREIGN KEY (userId) REFERENCES utilisateur(id) ON DELETE CASCADE,
     CONSTRAINT fk_commentaire_projet FOREIGN KEY (idProjet) REFERENCES projet(id) ON DELETE CASCADE
 );
 

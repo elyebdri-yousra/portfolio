@@ -13,6 +13,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
       <a href="index.php?page=home" class="font-bold">Accueil</a>
       <a href="index.php?page=about" class="font-bold">À propos</a>
       <a href="index.php?page=projet" class="font-bold">Projets</a>
+      <a href="index.php?page=veille" class="font-bold">Veille technologique</a>
       <a href="index.php?page=contact" class="font-bold">Contact</a>
     </div>
 

@@ -2,11 +2,11 @@
 
 namespace Controller;
 
-class AboutController extends Controller
+class VeilleController extends Controller
 {
 
     public function index()
     {
-        $this->render('about');
+        $this->render('veille');
     }
 }

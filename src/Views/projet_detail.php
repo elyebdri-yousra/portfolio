@@ -2,11 +2,21 @@
     <!-- Titre et bouton retour -->
     <div class="flex flex-row justify-between items-center w-full mb-4">
         <h1 class="text-4xl font-bold"><?php echo html_entity_decode($projet['titre']); ?></h1>
-        <a href="index.php?page=projet#liste"
-            class="bg-[#DB9ECF] font-[Cantarell] text-lg text-white px-6 py-2 rounded-md hover:bg-[#c085b7] transition-colors"
-            aria-label="Revenir à la liste des projets">
-            Retour
-        </a>
+        <div class="space-x-2">
+            <?php if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) { ?>
+
+                <a href="index.php?page=projet_edit&id=<?php echo $projet['id'] ?>"
+                    class="bg-[#DB9ECF] font-[Cantarell] text-lg text-white px-6 py-2 rounded-md hover:bg-[#c085b7] transition-colors"
+                    aria-label="Revenir à la liste des projets">
+                    Modifier
+                </a>
+            <?php } ?>
+            <a href="index.php?page=projet#liste"
+                class="bg-[#DB9ECF] font-[Cantarell] text-lg text-white px-6 py-2 rounded-md hover:bg-[#c085b7] transition-colors"
+                aria-label="Revenir à la liste des projets">
+                Retour
+            </a>
+        </div>
     </div>
 
     <!-- Carrousel d'images -->
@@ -31,7 +41,7 @@
         <div class="space-y-6">
             <div class="rounded-xl bg-white p-4 shadow">
                 <h3 class="text-lg font-semibold mb-2">Description du projet</h3>
-                <p class="leading-7 mb-5"><?php echo html_entity_decode($projet['description']); ?></p>
+                <p class="leading-7 mb-5"><?php echo html_entity_decode(htmlspecialchars($projet['description'])); ?></p>
                 <h3 class="text-lg font-semibold mb-2">Logiciels utilisés & Dates</h3>
                 <div class="flex flex-wrap gap-4 mb-2">
                     <?php foreach ($logiciels as $logiciel) { ?>
@@ -47,20 +57,9 @@
                 <p class="text-sm"><strong>Date de création :</strong> <?php echo html_entity_decode($projet['dateCrea']); ?></p>
             </div>
 
-            <?php if (isset($_SESSION['user']) && $_SESSION['user']['idRole'] == 1) { ?>
-                <div class="rounded-xl bg-white p-4 shadow">
-                    <h3 class="text-lg font-semibold mb-2">Ressources</h3>
-                    <ul class="list-disc list-inside text-sm text-gray-700">
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Nulla facilisi.</li>
-                        <li>Fusce auctor sapien.</li>
-                        <li>Integer tincidunt.</li>
-                    </ul>
-                </div>
-            <?php } ?>
             <div class="rounded-xl bg-white p-4 shadow">
                 <h3 class="text-lg font-semibold mb-2">Problèmes rencontrés et solutions apportées</h3>
-                <p class="leading-7"><?php echo html_entity_decode($projet['argumentaire']); ?></p>
+                <p class="leading-7"><?php echo html_entity_decode(htmlspecialchars($projet['apprentissageCritique'])); ?></p>
             </div>
 
         </div>
@@ -68,9 +67,16 @@
         <!-- Colonne droite -->
         <div class="space-y-6">
 
-            <div class="rounded-xl bg-white p-4 shadow">
+            <div class="rounded-xl bg-white p-4 shadow relative">
                 <h3 class="text-lg font-semibold mb-2">Argumentaire</h3>
-                <p class="leading-7"><?php echo html_entity_decode($projet['argumentaire']); ?></p>
+                <div id="argumentaire-content" class="max-h-[200px] overflow-hidden transition-all duration-300 ease-in-out">
+                    <p class="leading-7">
+                        <?php echo html_entity_decode(htmlspecialchars(htmlspecialchars($projet['argumentaire']))); ?>
+                    </p>
+                </div>
+                <button id="toggle-button" class="mt-2 text-sm text-blue-600 hover:underline hidden">
+                    Afficher plus
+                </button>
             </div>
             <?php if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1 || $_SESSION['user']['idRole'] == 2)) { ?>
                 <div class="rounded-xl bg-white p-4 shadow" id="commentaire">
@@ -82,7 +88,7 @@
                                     <div class="bg-[#D9D9D9] max-w-[80%] p-2 rounded-md">
                                         <div class="flex justify-between mb-1 text-sm font-semibold">
                                             <span><?php echo $commentaire['prenom'] . ' ' . $commentaire['nom']; ?></span>
-                                            
+
                                         </div>
                                         <p class="text-sm"><?php echo $commentaire['commentaire'] ?? ''; ?></p>
                                     </div>
@@ -149,6 +155,30 @@
         if (container) {
             container.scrollTop = container.scrollHeight;
         }
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const content = document.getElementById("argumentaire-content");
+        const button = document.getElementById("toggle-button");
+
+        // Vérifie si le contenu dépasse 200px
+        if (content.scrollHeight > 200) {
+            button.classList.remove("hidden");
+        }
+
+        let expanded = false;
+
+        button.addEventListener("click", function() {
+            expanded = !expanded;
+            if (expanded) {
+                content.classList.remove("max-h-[200px]", "overflow-hidden");
+                button.textContent = "Afficher moins";
+            } else {
+                content.classList.add("max-h-[200px]", "overflow-hidden");
+                button.textContent = "Afficher plus";
+            }
+        });
     });
 </script>
 

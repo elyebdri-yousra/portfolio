@@ -51,7 +51,7 @@ class ProjetController extends Controller
         $logicielModel = new Logiciel();
         $logiciels = $logicielModel->getLogicielByProject($id);
         if ($projet) {
-            $this->render('projet_detail', ['projet' => $projet, 'logiciels' => $logiciels ,'images' => $images, 'commentaires' => $commentaires, 'user_id' => $_SESSION['user']['id'] ?? null]);
+            $this->render('projet_detail', ['projet' => $projet, 'logiciels' => $logiciels, 'images' => $images, 'commentaires' => $commentaires, 'user_id' => $_SESSION['user']['id'] ?? null]);
         } else {
             $this->error->index();
         }
@@ -148,6 +148,63 @@ class ProjetController extends Controller
         }
     }
 
+    public function editProjet($id)
+    {
+        $projetModel = new Projet();
+        $projet = $projetModel->getProjetById($id);
+        $imageModel = new Image();
+        $images = $imageModel->getAllImageByProjectId($id);
+        $commentairesModel = new Commentaire();
+        $commentaires = $commentairesModel->getAllCommentaireByProjectId($id);
+        $logicielModel = new Logiciel();
+        $logiciels = $logicielModel->getLogicielByProject($id);
+        if ($projet) {
+            $this->render('projet_edit', ['projet' => $projet, 'logiciels' => $logiciels, 'images' => $images, 'commentaires' => $commentaires, 'user_id' => $_SESSION['user']['id'] ?? null]);
+        } else {
+            $this->error->index();
+        }
+    }
+
+
+    public function delete_img(){
+        $id = filter_input(INPUT_POST, 'projet_id', FILTER_SANITIZE_NUMBER_INT);
+        $image_nom = filter_input(INPUT_POST, 'image_id', FILTER_SANITIZE_SPECIAL_CHARS);
+        $imageModel = new Image();
+        $images = $imageModel->getAllImageByProjectId($id);
+
+        foreach($images as $image){
+            if($image['img_path'] == "./storage/projects_img/".$image_nom ){
+                $imageModel->deleteUniqueImageByProjectId($id,$image_nom);
+                break;
+            }
+        }
+        $this->editProjet($id);
+
+    }
+
+    public function ajoute_img(){
+        $id = filter_input(INPUT_POST, 'projet_id', FILTER_SANITIZE_NUMBER_INT);
+        $projetModel = new Projet();
+        $projet = $projetModel->getProjetById($id);
+        $this->loadImage($projet['titre'], $projet['date'], $projet['dateCrea'], $projet['typeProjet']);
+        $this->editProjet($id);
+    }
+
+    public function update_projet(){
+        $id = filter_input(INPUT_POST, 'id_projet', FILTER_SANITIZE_NUMBER_INT);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_SPECIAL_CHARS);
+        $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_SPECIAL_CHARS);
+        $annee_but = filter_input(INPUT_POST, 'annee_but', FILTER_SANITIZE_SPECIAL_CHARS);
+        $apprentissage = filter_input(INPUT_POST, 'apprentissage', FILTER_SANITIZE_SPECIAL_CHARS);
+        $argumentaire = filter_input(INPUT_POST, 'argumentaire', FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+        $modelProjet = new Projet();
+        $modelProjet->update_projet($description, $date, $annee_but, apprentissage: $apprentissage,argumentaire: $argumentaire, id: $id);
+
+        $this->editProjet($id);
+
+    }
 
 
 
@@ -161,7 +218,6 @@ class ProjetController extends Controller
             $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_SPECIAL_CHARS);
             $annee_but = filter_input(INPUT_POST, 'annee_but', FILTER_SANITIZE_SPECIAL_CHARS);
             $apprentissage = filter_input(INPUT_POST, 'apprentissage', FILTER_SANITIZE_SPECIAL_CHARS);
-            $competence = filter_input(INPUT_POST, 'competence', FILTER_SANITIZE_SPECIAL_CHARS);
             $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
             $argumentaire = filter_input(INPUT_POST, 'argumentaire', FILTER_SANITIZE_SPECIAL_CHARS);
             $commentaires = filter_input(INPUT_POST, 'commentaires', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -176,12 +232,12 @@ class ProjetController extends Controller
 
 
             // Vérifier que les champs obligatoires ne sont pas vides
-            if (!$titre || !$description || !$date || !$annee_but || !$apprentissage || !$competence || !$type || !$argumentaire) {
+            if (!$titre || !$description || !$date || !$annee_but || !$apprentissage || !$type || !$argumentaire) {
                 echo "Tous les champs obligatoires doivent être remplis.";
                 return;
             }
             $projetModel = new Projet();
-            $success = $projetModel->addProjet($titre, $description, $date, $annee_but, $apprentissage, $competence, $type, $argumentaire, $commentaires, $idUser);
+            $success = $projetModel->addProjet($titre, $description, $date, $annee_but, $apprentissage, $type, $argumentaire, $commentaires, $idUser);
             // Fonction pour associer les logiciels et les projets
 
             if ($success) {
@@ -204,8 +260,8 @@ class ProjetController extends Controller
 
         foreach ($logiciels['logiciels'] as $log) {
             $logiciel = $logicielModel->getLogicielById($log);
-            if($logiciel){
-                $logicielModel->associateProjetLogiciel($projet_id,$log, $logiciel['urlimg']);
+            if ($logiciel) {
+                $logicielModel->associateProjetLogiciel($projet_id, $log, $logiciel['urlimg']);
             }
         }
     }
@@ -233,7 +289,7 @@ Comme je gère plusieurs images et qu'elles sont rangé comme ça :
         ]
 
 Un tableau qui contient un tableau qui lui meme contient un tableau, le tableau images qui à en lui les noms, les full_path et les types.
-Je rappelle que pour accéder aux fichiers j'ai besoin de $_FILES. Donc si je veux voir les informations de mes images
+Je rappelle que pour accéder aux fichiers j'ai besoin de $_FILES. Donc si je veux voir les in   ations de mes images
 je dois rentrer dans le tableau $_FILES. Pour cela j'écris $_FILES['images] ( ['images'] vient de la page web, du name )
 
 Ce qui donne : 

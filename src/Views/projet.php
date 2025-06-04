@@ -40,9 +40,9 @@
                             <div>
                                 <label for="type">Type de projet :</label>
                                 <select name="type" id="type" required class="w-full p-2 border rounded">
+                                    <option value="programme">Développement</option>
                                     <option value="infographie">Infographie</option>
                                     <option value="vidéo">Production audio visuelle</option>
-                                    <option value="programme">Développement</option>
                                     <option value="texte">Communication</option>
                                 </select>
                             </div>
@@ -52,18 +52,14 @@
                                 <textarea name="description" id="description" required class="w-full p-2 border rounded h-20"></textarea>
                             </div>
 
-                            <div>
-                                <label for="apprentissage">Apprentissage critique :</label>
-                                <input type="text" name="apprentissage" id="apprentissage" class="w-full p-2 border rounded">
+                            <div class="col-span-2">
+                                <label for="apprentissage">Argumentaire :</label>
+                                <textarea name="apprentissage" id="apprentissage" required class="w-full p-2 border rounded h-20"></textarea>
                             </div>
 
-                            <div>
-                                <label for="competence">Compétence associée :</label>
-                                <input type="text" name="competence" id="competence" class="w-full p-2 border rounded">
-                            </div>
 
                             <div class="col-span-2">
-                                <label for="argumentaire">Argumentaire :</label>
+                                <label for="argumentaire">Apprentissage critique :</label>
                                 <textarea name="argumentaire" id="argumentaire" required class="w-full p-2 border rounded h-20"></textarea>
                             </div>
 

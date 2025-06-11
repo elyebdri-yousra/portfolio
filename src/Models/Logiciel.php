@@ -35,13 +35,21 @@ class Logiciel
         return $req->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function associateProjetLogiciel($projet_id, $logiciel_id, $url_img){
+    public function associateProjetLogiciel($projet_id, $logiciel_id, $url_img)
+    {
         $req = $this->pdo->prepare("INSERT INTO logicielUse (idProjet, idLogiciel, url_img) VALUES ( ?, ?, ?)");
-        return $req->execute([$projet_id,$logiciel_id, $url_img]);
+        return $req->execute([$projet_id, $logiciel_id, $url_img]);
     }
 
-    public function getLogicielByProject($id_projet){
-        $req = $this->pdo->prepare("SELECT url_img,nomLogiciel FROM logicielUse inner join logiciel on logiciel.id = logicielUse.idLogiciel  WHERE idProjet = ?");
+    public function desassociateAllProjetLogiciel($projet_id)
+    {
+        $req = $this->pdo->prepare("DELETE FROM logicielUse WHERE idProjet = ?");
+        return $req->execute([$projet_id]);
+    }
+
+    public function getLogicielByProject($id_projet)
+    {
+        $req = $this->pdo->prepare("SELECT url_img,nomLogiciel,logiciel.id FROM logicielUse inner join logiciel on logiciel.id = logicielUse.idLogiciel  WHERE idProjet = ?");
         $req->execute([$id_projet]);
         return $req->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -52,6 +60,8 @@ class Logiciel
         $req->execute([$id]); // Passe l'argument $id ici
         return true;
     }
+
+
 
     public function addLogiciel($nom, $url_img)
     {

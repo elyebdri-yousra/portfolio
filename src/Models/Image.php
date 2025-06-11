@@ -5,7 +5,7 @@ namespace Modeles;
 use PDO;
 
 class Image extends Model {
-    public function ajoutImage($nom, $urlimgL, $idProjet) {
+        public function ajoutImage($nom, $urlimgL, $idProjet) {
         $req = $this->pdo->prepare("INSERT INTO projet_img (nom, img_path, id_projet) VALUES (?, ?, ?)");
         return $req->execute([$nom, $urlimgL, $idProjet]);
     }
@@ -23,6 +23,11 @@ class Image extends Model {
         return true;
     }
 
+    public function deleteUniqueImageByProjectId($id,$nom){
+        $req = $this->pdo->prepare("DELETE FROM projet_img WHERE id_projet = ? and nom = ?");
+        $req->execute([$id, $nom]);
+        return true;
+    }
 
 
 }

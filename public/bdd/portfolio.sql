@@ -52,7 +52,7 @@ CREATE TABLE commentaire (
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     idProjet INT,         -- Référence au projet commenté
     commentaire TEXT,
-    CONSTRAINT fk_commentaire_utilisateur FOREIGN KEY (userId) REFERENCES utilisateur(id),
+    CONSTRAINT fk_commentaire_utilisateur FOREIGN KEY (userId) REFERENCES utilisateur(id) ON DELETE CASCADE,
     CONSTRAINT fk_commentaire_projet FOREIGN KEY (idProjet) REFERENCES projet(id) ON DELETE CASCADE
 );
 
@@ -79,10 +79,31 @@ CREATE TABLE images (
     urlimgL VARCHAR(255)
 );
 
+
+CREATE TABLE competences(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom varchar(255) NOT NULL
+);
+
+CREATE TABLE projet_competence(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_projet INT,
+    id_competence INT,
+    CONSTRAINT fk_projectUse_competence FOREIGN KEY (id_projet) REFERENCES projet(id) ON DELETE CASCADE,
+    CONSTRAINT fk_competenceUse_competence FOREIGN KEY (id_competence) REFERENCES competences(id)
+);
+
+
+
+INSERT INTO competences(nom) VALUES('Développer');
+INSERT INTO competences(nom) VALUES('Concevoir');
+INSERT INTO competences(nom) VALUES('Entreprendre');
+INSERT INTO competences(nom) VALUES('Comprendre');
+INSERT INTO competences(nom) VALUES('Exprimer');
+
+
+
 INSERT INTO role(nom) VALUES ('Administrateur');
 INSERT INTO role(nom) VALUES ('Evaluateur');
 INSERT INTO role(nom) VALUES ('En attente');
 INSERT INTO role(nom) VALUES ('Refusé');
-
-INSERT INTO utilisateur(nom,prenom,email,mdp,idRole) VALUES ('Yousra', 'El Yebdri', 'admin@dev.fr','$2y$10$yb8MmqGrC4XcnrIeHkNnR.KwhCfo3Ifhe4jhA4BIxyxdAzlliayyG', 1);
-

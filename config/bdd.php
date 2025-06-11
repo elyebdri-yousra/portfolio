@@ -1,13 +1,14 @@
 <?php
 
-class Database {
+class Database
+{
     private static $instance = null;
     private $pdo;
 
-    private function __construct() {
+    /**private function __construct() {
         $host = '127.0.0.1';
-        $dbname = 'portfolio'; 
-        $user = 'hsn7sr';
+        $dbname = 'tili9541_portfolio'; 
+        $user = 'tili9541_hsn7sr';
         $password = '@Hsn9Ysr.';
         $dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
 
@@ -17,9 +18,26 @@ class Database {
         } catch(PDOException $e) {
             die("Erreur de connexion : " . $e->getMessage());
         }
+    }**/
+
+    private function __construct()
+    {
+        $host = '127.0.0.1';
+        $dbname = 'portfolio';
+        $user = 'dev';
+        $password = 'root';
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=UTF8";
+
+        try {
+            $this->pdo = new PDO($dsn, $user, $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Erreur de connexion : " . $e->getMessage());
+        }
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instance === null) {
             self::$instance = new Database();
         }

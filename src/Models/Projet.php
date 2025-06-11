@@ -1,4 +1,5 @@
 <?php
+
 namespace Modeles;
 
 use PDO;
@@ -30,7 +31,8 @@ class Projet extends Model
         return $req->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function deleteProjetById($id){
+    public function deleteProjetById($id)
+    {
         $req = $this->pdo->prepare("DELETE FROM projet WHERE id = ?");
         $req->execute([$id]); // Passe l'argument $id ici
         return true;
@@ -45,12 +47,32 @@ class Projet extends Model
         return $req->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addProjet($titre, $description, $date, $annee_but, $apprentissage, $competence, $type, $argumentaire, $idUser)
+    public function update_projet($description, $date, $annee_but, $apprentissage, $argumentaire, $id)
+    {
+        $sql = "UPDATE projet
+        SET description = ?, date = ?, dateCrea = ?, apprentissageCritique = ?, argumentaire = ?
+        WHERE id = ?";
+
+        $req = $this->pdo->prepare($sql);
+        return $req->execute([
+            $description,
+            $date,
+            $annee_but,
+            $apprentissage,
+            $argumentaire,
+            $id
+        ]);
+    }
+
+
+
+    public function addProjet($titre, $description, $date, $annee_but, $apprentissage, $type, $argumentaire, $idUser)
     {
         $req = $this->pdo->prepare("
-            INSERT INTO projet (titre, description,date, dateCrea, apprentissageCritique, competenceAssociee, typeProjet, argumentaire, idUser) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO projet (titre, description,date, dateCrea, apprentissageCritique, typeProjet, argumentaire, idUser) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
+
 
         return $req->execute([
             $titre,
@@ -58,7 +80,6 @@ class Projet extends Model
             $date,
             $annee_but,
             $apprentissage,
-            $competence,
             $type,
             $argumentaire,
             $idUser

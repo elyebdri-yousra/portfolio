@@ -6,6 +6,7 @@ use Controller\ProjetController;
 use Controller\UserController;
 use Controller\ContactController;
 use Controller\AboutController;
+use Controller\VeilleController;
 use Controller\ErrorController;
 use Controller\LogicielController;
 
@@ -36,6 +37,10 @@ switch ($page) {
         $controller = new AboutController();
         $controller->index();
         break;
+    case 'veille':
+        $controller = new VeilleController();
+        $controller->index();
+        break;
     case 'projet':
         $controller = new ProjetController();
         $controller->index();
@@ -59,10 +64,46 @@ switch ($page) {
             $controller->render('error');
         }
         break;
+    case 'delete_image_projet':
+        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
+            $controller = new ProjetController();
+            $controller->delete_img();
+        } else {
+            $controller = new ErrorController();
+            $controller->render('error');
+        }
+        break;
+    case 'ajoute_image_projet':
+        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
+            $controller = new ProjetController();
+            $controller->ajoute_img();
+        } else {
+            $controller = new ErrorController();
+            $controller->render('error');
+        }
+        break;
+    case 'save_update_projet':
+        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
+            $controller = new ProjetController();
+            $controller->update_projet();
+        } else {
+            $controller = new ErrorController();
+            $controller->render('error');
+        }
+        break;
     case 'deleteUser':
         if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
             $controller = new UserController();
             $controller->deleteUser();
+        } else {
+            $controller = new ErrorController();
+            $controller->render('error');
+        }
+        break;
+    case 'projet_edit':
+        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
+            $controller = new ProjetController();
+            $controller->editProjet($_GET['id']);
         } else {
             $controller = new ErrorController();
             $controller->render('error');

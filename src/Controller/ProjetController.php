@@ -8,6 +8,7 @@ use Modeles\Image;
 use Controller\ErrorController;
 use Exception;
 use Modeles\Commentaire;
+use Modeles\Competence;
 use Modeles\Logiciel;
 
 class ProjetController extends Controller
@@ -29,15 +30,18 @@ class ProjetController extends Controller
         $logiciels = $logicielModel->getAllLogiciel();
         // Je veux une image pour présenter le projet -> Thumbnail.
         // Je récupère le projet, c'est un array, j'y ajoute urlimg pour lui donner le lieu de la première image
+        $competenceModel = new Competence();
+        $competences = $competenceModel->getAllCompetence();
         $nb_projet = count($projets);
         for ($i = 0; $i < $nb_projet; $i++) {
             $urlimg = $projetModel->getThumbnailById($projets[$i]['id']);
             $projets[$i]['urlimg'] = $urlimg['img_path'] ?? "";
+            $projets[$i]['competences'] = $competenceModel->getCompetenceByProjet($projets[$i]['id']);
         }
         if (isset($_SESSION['error'])) {
             unset($_SESSION['error']);
         }
-        $this->render('projet', ['projets' => $projets, 'logiciels' => $logiciels]);
+        $this->render('projet', ['projets' => $projets, 'logiciels' => $logiciels, 'competences' => $competences]);
     }
 
     public function show($id)
@@ -50,8 +54,10 @@ class ProjetController extends Controller
         $commentaires = $commentairesModel->getAllCommentaireByProjectId($id);
         $logicielModel = new Logiciel();
         $logiciels = $logicielModel->getLogicielByProject($id);
+        $competenceModel = new Competence();
+        $competences = $competenceModel->getCompetenceByProjet($id);
         if ($projet) {
-            $this->render('projet_detail', ['projet' => $projet, 'logiciels' => $logiciels ,'images' => $images, 'commentaires' => $commentaires, 'user_id' => $_SESSION['user']['id'] ?? null]);
+            $this->render('projet_detail', ['projet' => $projet, 'logiciels' => $logiciels, 'images' => $images, 'commentaires' => $commentaires, 'competences' => $competences, 'user_id' => $_SESSION['user']['id'] ?? null]);
         } else {
             $this->error->index();
         }
@@ -148,12 +154,113 @@ class ProjetController extends Controller
         }
     }
 
+    public function editProjet($id)
+    {
+        $projetModel = new Projet();
+        $projet = $projetModel->getProjetById($id);
+        $imageModel = new Image();
+        $images = $imageModel->getAllImageByProjectId($id);
+        $commentairesModel = new Commentaire();
+        $commentaires = $commentairesModel->getAllCommentaireByProjectId($id);
+        $logicielModel = new Logiciel();
+        $competenceModel = new Competence();
+
+        $logiciels = $logicielModel->getLogicielByProject($id);
+        $competences = $competenceModel->getCompetenceByProjet($id);
+        $otherLogiciels = $logicielModel->getAllLogiciel();
+        $otherCompetences = $competenceModel->getAllCompetence();
+        $logiciels = $this->checkUsed($logiciels, $otherLogiciels);
+        $competences = $this->checkUsed($competences, $otherCompetences);
+        if ($projet) {
+            $this->render('projet_edit', ['projet' => $projet, 'logiciels' => $logiciels, 'images' => $images, 'commentaires' => $commentaires, 'competences' => $competences, 'user_id' => $_SESSION['user']['id'] ?? null]);
+        } else {
+            $this->error->index();
+        }
+    }
+
+    // Cette fonction permet de mettre un 1 si un élément est déjà utilisé par un projet.
+    // En gros : je prends tous les logiciels de la bdd, et je regarde si le projet l'a déjà.
+    // Si il l'a déjà je met un 1 sinon je met un 0
+    public function checkUsed($used, $notUsed)
+    {
+        for ($i = 0; $i < count($notUsed); $i++) {
+            foreach ($used as $thing) {
+                if ($notUsed[$i]['id'] == $thing['id']) {
+                    $notUsed[$i]['checked'] = 1;
+                    break;
+                }
+            }
+        }
+        return $notUsed;
+    }
+
+
+    public function delete_img()
+    {
+        $id = filter_input(INPUT_POST, 'projet_id', FILTER_SANITIZE_NUMBER_INT);
+        $image_nom = filter_input(INPUT_POST, 'image_id', FILTER_SANITIZE_SPECIAL_CHARS);
+        $imageModel = new Image();
+        $images = $imageModel->getAllImageByProjectId($id);
+
+        foreach ($images as $image) {
+            if ($image['img_path'] == "./storage/projects_img/" . $image_nom) {
+                $imageModel->deleteUniqueImageByProjectId($id, $image_nom);
+                break;
+            }
+        }
+        $this->editProjet($id);
+    }
+
+    public function ajoute_img()
+    {
+        $id = filter_input(INPUT_POST, 'projet_id', FILTER_SANITIZE_NUMBER_INT);
+        $projetModel = new Projet();
+        $projet = $projetModel->getProjetById($id);
+        $this->loadImage($projet['titre'], $projet['date'], $projet['dateCrea'], $projet['typeProjet']);
+        $this->editProjet($id);
+    }
+
+    public function update_projet()
+    {
+        $id = filter_input(INPUT_POST, 'id_projet', FILTER_SANITIZE_NUMBER_INT);
+        $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_SPECIAL_CHARS);
+        $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_SPECIAL_CHARS);
+        $annee_but = filter_input(INPUT_POST, 'annee_but', FILTER_SANITIZE_SPECIAL_CHARS);
+        $apprentissage = filter_input(INPUT_POST, 'apprentissage', FILTER_SANITIZE_SPECIAL_CHARS);
+        $argumentaire = filter_input(INPUT_POST, 'argumentaire', FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+        $logiciels = filter_input_array(INPUT_POST, [
+            'logiciels' => [
+                'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+                'flags' => FILTER_REQUIRE_ARRAY
+            ]
+        ]);
+
+        $competences = filter_input_array(INPUT_POST, [
+            'competences' => [
+                'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+                'flags' => FILTER_REQUIRE_ARRAY
+            ]
+        ]);
+
+
+        $modelProjet = new Projet();
+
+        $this->retriveCompetenceById($id, $competences);
+        $this->retriveLogicielById($id, $logiciels);
+
+
+        $modelProjet->update_projet($description, $date, $annee_but, $apprentissage, $argumentaire, $id);
+
+        $this->editProjet($id);
+    }
 
 
 
     public function add()
     {
-        // fichier avec l'endroit ou il est enregistrer. Si le nom c'est bapt : ../storage/projects_img/bapt.png
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Filtrage des entrées utilisateur
             $titre = filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -161,7 +268,6 @@ class ProjetController extends Controller
             $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_SPECIAL_CHARS);
             $annee_but = filter_input(INPUT_POST, 'annee_but', FILTER_SANITIZE_SPECIAL_CHARS);
             $apprentissage = filter_input(INPUT_POST, 'apprentissage', FILTER_SANITIZE_SPECIAL_CHARS);
-            $competence = filter_input(INPUT_POST, 'competence', FILTER_SANITIZE_SPECIAL_CHARS);
             $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
             $argumentaire = filter_input(INPUT_POST, 'argumentaire', FILTER_SANITIZE_SPECIAL_CHARS);
             $commentaires = filter_input(INPUT_POST, 'commentaires', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -174,23 +280,77 @@ class ProjetController extends Controller
                 ]
             ]);
 
+            $competences = filter_input_array(INPUT_POST, [
+                'competences' => [
+                    'filter' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+                    'flags' => FILTER_REQUIRE_ARRAY
+                ]
+            ]);
 
-            // Vérifier que les champs obligatoires ne sont pas vides
-            if (!$titre || !$description || !$date || !$annee_but || !$apprentissage || !$competence || !$type || !$argumentaire) {
-                echo "Tous les champs obligatoires doivent être remplis.";
-                return;
-            }
+
             $projetModel = new Projet();
-            $success = $projetModel->addProjet($titre, $description, $date, $annee_but, $apprentissage, $competence, $type, $argumentaire, $commentaires, $idUser);
+            $success = $projetModel->addProjet($titre, $description, $date, $annee_but, $apprentissage, $type, $argumentaire, $idUser);
+
             // Fonction pour associer les logiciels et les projets
 
             if ($success) {
                 $this->loadImage($titre, $date, $annee_but, $type);
                 $this->retriveLogiciel($titre, $date, $annee_but, $type, $logiciels);
+                $this->retriveCompetence($titre, $date, $annee_but, $type, $competences);
+
                 header('Location: index.php?page=projet');
                 exit;
             } else {
                 $this->error->index();
+            }
+        }
+    }
+
+    public function retriveCompetenceById($id_projet, $competences)
+    {
+        $competenceModel = new Competence();
+        $competenceModel->desassociateAllProjetCompetence($id_projet);
+        if ($competences['competences'] != null) {
+
+            foreach ($competences['competences'] as $id) {
+                $competence = $competenceModel->getCompetenceById($id);
+                if ($competence) {
+
+                    $competenceModel->associateProjetCompetence($id_projet, $competence['id']);
+                }
+            }
+        }
+    }
+
+    public function retriveCompetence($titre, $date, $annee_but, $type, $competences)
+    {
+        $projetModel = new Projet();
+        $projet_id = $projetModel->getProjetByCol($titre, $date, $annee_but, $type);
+
+        $competenceModel = new Competence();
+        $competenceModel->desassociateAllProjetCompetence($projet_id);
+        if ($competences['competences'] != null) {
+
+            foreach ($competences['competences'] as $id) {
+                $competence = $competenceModel->getCompetenceById($id);
+                if ($competence) {
+
+                    $competenceModel->associateProjetCompetence($projet_id, $competence['id']);
+                }
+            }
+        }
+    }
+
+    public function retriveLogicielById($id_projet, $logiciels)
+    {
+        $logicielModel = new Logiciel();
+        $logicielModel->desassociateAllProjetLogiciel($id_projet);
+        if ($logiciels['logiciels'] != null) {
+            foreach ($logiciels['logiciels'] as $id) {
+                $logiciel = $logicielModel->getLogicielById($id);
+                if ($logiciel) {
+                    $logicielModel->associateProjetLogiciel($id_projet, $id, $logiciel['urlimg']);
+                }
             }
         }
     }
@@ -200,96 +360,17 @@ class ProjetController extends Controller
         $projetModel = new Projet();
         $projet_id = $projetModel->getProjetByCol($titre, $date, $annee_but, $type);
 
-        $logicielModel = new Logiciel();
 
-        foreach ($logiciels['logiciels'] as $log) {
-            $logiciel = $logicielModel->getLogicielById($log);
-            if($logiciel){
-                $logicielModel->associateProjetLogiciel($projet_id,$log, $logiciel['urlimg']);
+        $logicielModel = new Logiciel();
+        $logicielModel->desassociateAllProjetLogiciel($projet_id);
+        if ($logiciels['logiciels'] != null) {
+
+            foreach ($logiciels['logiciels'] as $id) {
+                $logiciel = $logicielModel->getLogicielById($id);
+                if ($logiciel) {
+                    $logicielModel->associateProjetLogiciel($projet_id, $id, $logiciel['urlimg']);
+                }
             }
         }
     }
 }
-/*
-Comme je gère plusieurs images et qu'elles sont rangé comme ça :
-        array:1 [▼
-            "images" => array:6 [▼
-                "name" => array:3 [▼
-                    0 => "Screenshot 2025-04-02 at 09.43.56.png"
-                    1 => "Screenshot 2025-04-02 at 09.44.01.png"
-                    2 => "Screenshot 2025-04-07 at 10.42.53.png"
-                ]
-                "full_path" => array:3 [▼
-                    0 => "Screenshot 2025-04-02 at 09.43.56.png"
-                    1 => "Screenshot 2025-04-02 at 09.44.01.png"
-                    2 => "Screenshot 2025-04-07 at 10.42.53.png"
-                ]
-                "type" => array:3 [▼
-                    0 => "image/png"
-                    1 => "image/png"
-                    2 => "image/png"
-                ]
-            ]
-        ]
-
-Un tableau qui contient un tableau qui lui meme contient un tableau, le tableau images qui à en lui les noms, les full_path et les types.
-Je rappelle que pour accéder aux fichiers j'ai besoin de $_FILES. Donc si je veux voir les informations de mes images
-je dois rentrer dans le tableau $_FILES. Pour cela j'écris $_FILES['images] ( ['images'] vient de la page web, du name )
-
-Ce qui donne : 
-        array:6 [▼
-            "name" => array:3 [▼
-                0 => "Screenshot 2025-04-02 at 09.43.56.png"
-                1 => "Screenshot 2025-04-02 at 09.44.01.png"
-                2 => "Screenshot 2025-04-07 at 10.42.53.png"
-            ]
-            "full_path" => array:3 [▼
-                0 => "Screenshot 2025-04-02 at 09.43.56.png"
-                1 => "Screenshot 2025-04-02 at 09.44.01.png"
-                2 => "Screenshot 2025-04-07 at 10.42.53.png"
-            ]
-            "type" => array:3 [▼
-                0 => "image/png"
-                1 => "image/png"
-                2 => "image/png"
-            ]
-        ]
-
-Donc la je me retrouve avec 3 tableau: nom, full_path et type.
-Par exemple si je veux voir tous les name:
-$_FILES['images']['name']. Pour le moment j'y accède sans boucle, juste en écrivant à la main ce que je veux récuperer.
-Si je veux le nom de la deuxième image j'écris $_FILES['images']['name'][1]
-
-Donc si je résume =
-
-$_FILES['images'] : array:6 [▼
-                        "name" => array:3 [▼
-                            0 => "Screenshot 2025-04-02 at 09.43.56.png"
-                            1 => "Screenshot 2025-04-02 at 09.44.01.png"
-                            2 => "Screenshot 2025-04-07 at 10.42.53.png"
-                        ]
-                        "full_path" => array:3 [▼
-                            0 => "Screenshot 2025-04-02 at 09.43.56.png"
-                            1 => "Screenshot 2025-04-02 at 09.44.01.png"
-                            2 => "Screenshot 2025-04-07 at 10.42.53.png"
-                        ]
-                        "type" => array:3 [▼
-                            0 => "image/png"
-                            1 => "image/png"
-                            2 => "image/png"
-                        ]
-                    ]
-
-$_FILES['images']['name'] : "name" => array:3 [▼
-                                0 => "Screenshot 2025-04-02 at 09.43.56.png"
-                                1 => "Screenshot 2025-04-02 at 09.44.01.png"
-                                2 => "Screenshot 2025-04-07 at 10.42.53.png"
-                            ]
-
-$_FILES['images']['name'][1] : 1 => "Screenshot 2025-04-02 at 09.44.01.png"
-
-
-À la main ca donnerait ça, si je veux faire avec une bouclen je dois avoir "i" qui augmente en taille sans dépasser le nombre d'image.
-Ca veut qu'au premier tour de boucle, je lis la première image, qu'au deuxième tour de boucle je lis la deuxième, qu'au troisième je lis la troisième etcetc. 
-
-**/

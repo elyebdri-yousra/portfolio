@@ -1,19 +1,19 @@
 <template>
-  <div class="min-h-screen bg-white">
+  <div class="min-h-screen bg-surface">
     <!-- Header -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <h1 class="text-5xl font-bold text-primary mb-4">Projets</h1>
-      <p class="text-xl text-gray-600">Explorez les projets qui jalonnent mon parcours professionnel et académique</p>
+      <p class="text-xl text-primary">Explorez les projets qui jalonnent mon parcours professionnel et académique</p>
     </section>
 
     <!-- Filters -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-      <div class="bg-surface rounded-lg p-6 shadow-sm">
+      <div class="bg-white rounded-lg p-6 shadow-sm border border-accent border-opacity-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Type Filter -->
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Type de projet</label>
-            <select v-model="selectedType" @change="loadProjets" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent">
+            <label class="block text-sm font-semibold text-primary mb-2">Type de projet</label>
+            <select v-model="selectedType" @change="loadProjets" class="w-full px-4 py-2 border border-primary border-opacity-30 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-primary">
               <option value="">Tous les types</option>
               <option v-for="type in types" :key="type.id" :value="type.id">
                 {{ type.nom }}
@@ -23,8 +23,8 @@
 
           <!-- Competences Filter -->
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Compétences</label>
-            <select v-model="selectedCompetences" multiple @change="loadProjets" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent">
+            <label class="block text-sm font-semibold text-primary mb-2">Compétences</label>
+            <select v-model="selectedCompetences" multiple @change="loadProjets" class="w-full px-4 py-2 border border-primary border-opacity-30 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent text-primary">
               <option v-for="comp in competences" :key="comp.id" :value="comp.id">
                 {{ comp.nom }}
               </option>
@@ -33,7 +33,7 @@
 
           <!-- Reset Button -->
           <div class="flex items-end">
-            <button @click="resetFilters" class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors">
+            <button @click="resetFilters" class="w-full px-4 py-2 bg-accent text-white rounded-lg font-semibold hover:bg-accent-dark transition-colors">
               Réinitialiser
             </button>
           </div>
@@ -45,19 +45,19 @@
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
       <div v-if="loading" class="text-center py-12">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
-        <p class="text-gray-600 mt-4">Chargement des projets...</p>
+        <p class="text-primary mt-4">Chargement des projets...</p>
       </div>
 
       <div v-else-if="projets.length === 0" class="text-center py-12">
-        <p class="text-xl text-gray-600">Aucun projet trouvé avec ces critères</p>
+        <p class="text-xl text-primary">Aucun projet trouvé avec ces critères</p>
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <router-link v-for="projet in projets" :key="projet.id"
                      :to="`/projets/${projet.id}`"
-                     class="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                     class="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border-t-4 border-accent">
           <!-- Image -->
-          <div class="relative h-48 bg-gray-200 overflow-hidden">
+          <div class="relative h-48 bg-surface overflow-hidden">
             <img v-if="projet.images && projet.images[0]"
                  :src="`/storage/${projet.images[0]}`"
                  :alt="projet.titre"
@@ -74,10 +74,10 @@
             <!-- Technologies -->
             <div v-if="projet.logiciels && projet.logiciels.length > 0" class="mb-3">
               <div class="flex flex-wrap gap-2">
-                <span v-for="logiciel in projet.logiciels.slice(0, 3)" :key="logiciel" class="text-xs bg-blue-100 text-accent px-2 py-1 rounded">
+                <span v-for="logiciel in projet.logiciels.slice(0, 3)" :key="logiciel" class="text-xs bg-accent bg-opacity-10 text-accent px-2 py-1 rounded">
                   {{ logiciel }}
                 </span>
-                <span v-if="projet.logiciels.length > 3" class="text-xs text-gray-500">
+                <span v-if="projet.logiciels.length > 3" class="text-xs text-primary">
                   +{{ projet.logiciels.length - 3 }}
                 </span>
               </div>
@@ -88,7 +88,7 @@
               <span v-for="comp in projet.competences.slice(0, 2)" :key="comp" class="text-xs bg-accent text-white px-2 py-1 rounded">
                 {{ comp }}
               </span>
-              <span v-if="projet.competences.length > 2" class="text-xs text-gray-500">
+              <span v-if="projet.competences.length > 2" class="text-xs text-primary">
                 +{{ projet.competences.length - 2 }}
               </span>
             </div>

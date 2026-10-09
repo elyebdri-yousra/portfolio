@@ -4,7 +4,15 @@
 
 ### ✅ Complété
 - **Architecture modernisée** : Migration de PHP/MySQL vers Vue 3 + Express.js + PostgreSQL
+- **Design refactorisé** : Couleurs rose/violet/beige matching original maquette
+  - Tailwind CSS 3 avec palette de couleurs personnalisée
+  - Responsive design mobile-first
+  - Couleurs: accent rose (#e0a8d8), accent2 violet (#c98fd8), accent3 violet foncé (#b87fb8), surface beige (#ede8e3)
 - **Pages publiques** : Home, About, Projets, Contact, Veille
+  - Home: Hero avec illustration gradient rose/violet sur gauche, texte sur droite
+  - About: Sections Parcours/Formations/Compétences avec bordures rose/violet
+  - Projets: Grille avec filtres, cartes avec bordures accent
+  - Contact: Formulaire avec inputs et bouton rose/violet
 - **API Express.js** : Endpoints complets pour :
   - Gestion des sections About (Parcours, Formations, Compétences)
   - Récupération des projets avec filtres
@@ -93,10 +101,16 @@ docker compose up -d
 
 ## 🎨 Design
 
-- **Framework CSS** : Tailwind CSS
-- **Couleur primaire** : #d946a6 (Rose)
+- **Framework CSS** : Tailwind CSS 3
+- **Couleurs** :
+  - Primaire (texte) : #333333
+  - Accent (rose) : #e0a8d8
+  - Accent-2 (violet) : #c98fd8
+  - Accent-3 (violet foncé) : #b87fb8
+  - Surface (beige/crème) : #ede8e3
 - **Responsive** : Mobile-first approach
 - **Accessibilité** : WCAG 2.1 AAA
+- **Design matching** : Palette originale du portfolio préservée
 
 ## 📁 Structure du projet
 

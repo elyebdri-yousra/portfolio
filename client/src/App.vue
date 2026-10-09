@@ -1,33 +1,33 @@
 <template>
   <div class="min-h-screen bg-surface flex flex-col">
     <!-- Navbar -->
-    <nav class="bg-surface border-b border-accent border-opacity-20 px-4 sm:px-6 lg:px-8 py-4">
+    <nav class="bg-surface px-4 sm:px-6 lg:px-8 py-4 border-b border-accent border-opacity-30">
       <div class="max-w-7xl mx-auto flex justify-between items-center">
         <!-- Logo -->
-        <router-link to="/" class="flex items-center gap-3">
-          <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white font-bold text-lg">Y</div>
+        <router-link to="/" class="flex items-center gap-3 flex-shrink-0">
+          <div class="w-14 h-14 bg-gradient-to-br from-accent via-accent2 to-accent3 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-md">Y</div>
         </router-link>
 
         <!-- Menu principal -->
-        <div class="hidden md:flex items-center gap-6">
-          <router-link to="/about" class="text-primary font-medium hover:text-accent transition-colors">À propos</router-link>
-          <router-link to="/projets" class="text-primary font-medium hover:text-accent transition-colors">Projets</router-link>
-          <router-link to="/veille" class="text-primary font-medium hover:text-accent transition-colors">Veille technologique</router-link>
-          <router-link to="/contact" class="text-primary font-medium hover:text-accent transition-colors">Contact</router-link>
+        <div class="hidden md:flex items-center gap-8">
+          <router-link to="/about" class="text-primary font-semibold text-sm hover:text-accent transition-colors">À propos</router-link>
+          <router-link to="/projets" class="text-primary font-semibold text-sm hover:text-accent transition-colors">Projets</router-link>
+          <router-link to="/veille" class="text-primary font-semibold text-sm hover:text-accent transition-colors">Veille technologique</router-link>
+          <router-link to="/contact" class="text-primary font-semibold text-sm hover:text-accent transition-colors">Contact</router-link>
         </div>
 
         <!-- Auth menu -->
         <div class="flex items-center gap-3">
           <div v-if="!authStore.isAuthenticated">
-            <router-link to="/auth" class="text-accent font-medium hover:text-accent-dark transition-colors">Connexion</router-link>
+            <router-link to="/auth" class="text-accent font-semibold text-sm hover:text-accent-dark transition-colors">Connexion</router-link>
           </div>
           <div v-else class="relative group">
-            <button class="text-accent font-medium hover:text-accent-dark transition-colors">{{ authStore.user?.prenom }} ▼</button>
-            <div class="hidden group-hover:flex absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg flex-col border border-accent border-opacity-20">
-              <router-link to="/admin" class="px-4 py-2 text-primary hover:bg-surface hover:text-accent transition-colors border-b">
+            <button class="text-accent font-semibold text-sm hover:text-accent-dark transition-colors">{{ authStore.user?.prenom }} ▼</button>
+            <div class="hidden group-hover:flex absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-lg flex-col border-2 border-accent">
+              <router-link to="/admin" class="px-4 py-2 text-primary hover:bg-accent hover:text-white transition-colors border-b border-accent border-opacity-20 font-medium">
                 Gestion admin
               </router-link>
-              <button @click="logout" class="px-4 py-2 text-primary hover:text-accent text-left w-full transition-colors">
+              <button @click="logout" class="px-4 py-2 text-primary hover:bg-accent hover:text-white text-left w-full transition-colors font-medium">
                 Déconnexion
               </button>
             </div>
@@ -42,7 +42,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-surface border-t border-accent border-opacity-20 mt-16">
+    <footer class="bg-surface border-t border-accent border-opacity-30 mt-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-primary text-sm">
         <p>© EL YEBDRI Yousra – 2026</p>
       </div>

@@ -7,13 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#2d2d2d',
-        accent: '#d88fb8',
-        'accent-dark': '#c975a5',
-        'accent-light': '#e5a8cc',
-        accent2: '#b08fc9',
-        surface: '#f5f0eb',
-        'surface-dark': '#eae5e0',
+        primary: '#333333',
+        accent: '#e0a8d8',
+        'accent-dark': '#d689c8',
+        'accent-light': '#e8bce3',
+        accent2: '#c98fd8',
+        accent3: '#b87fb8',
+        surface: '#ede8e3',
+        'surface-dark': '#e0dbd6',
       },
       fontFamily: {
         sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],

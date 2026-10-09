@@ -74,87 +74,126 @@ onMounted(async () => {
 
 <style scoped>
 .detail {
-  padding: 2rem;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
 .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   color: #d946a6;
   text-decoration: none;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .back-link:hover {
-  text-decoration: underline;
+  background: rgba(217, 70, 166, 0.1);
 }
 
 .detail-header {
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e5e5e5;
 }
 
 h1 {
   color: #d946a6;
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .type {
   color: #999;
   font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .detail-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: 1fr;
+  gap: 3rem;
 }
 
 .images-section {
-  grid-column: 1 / 3;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .images {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
 }
 
 .images img, .single-image {
   width: 100%;
-  border-radius: 8px;
+  border-radius: 6px;
   max-height: 400px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.images img:hover, .single-image:hover {
+  transform: scale(1.03);
 }
 
 .description-section {
-  grid-column: 1 / 3;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .description-section h2 {
-  color: #333;
-  margin-bottom: 1rem;
+  color: #d946a6;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .description-section p {
   color: #666;
   line-height: 1.8;
   font-size: 1.05rem;
+  word-break: break-word;
 }
 
 .info-section {
-  grid-column: 1 / 3;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 
+.tech, .skills {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.tech {
+  border-left: 4px solid #d946a6;
+}
+
+.skills {
+  border-left: 4px solid #d946a6;
+}
+
 h3 {
-  color: #333;
-  margin-bottom: 1rem;
+  color: #1a1a1a;
+  margin-bottom: 1.5rem;
   font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .tags, .competences {
@@ -164,11 +203,19 @@ h3 {
 }
 
 .tag {
-  background: #f0f0f0;
+  background: #f9f9f9;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   color: #333;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid #e5e5e5;
+  transition: all 0.3s ease;
+}
+
+.tag:hover {
+  background: #f0f0f0;
+  border-color: #d946a6;
 }
 
 .comp-tag {
@@ -176,25 +223,42 @@ h3 {
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.comp-tag:hover {
+  background: #c0209d;
 }
 
 .loading, .not-found {
   text-align: center;
-  padding: 3rem 2rem;
+  padding: 4rem 2rem;
   color: #999;
+  font-size: 1.1rem;
 }
 
 .not-found a {
   color: #d946a6;
   text-decoration: none;
   display: inline-block;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #f9f9f9;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.not-found a:hover {
+  background: #d946a6;
+  color: white;
 }
 
 @media (max-width: 768px) {
   .detail {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   }
 
   h1 {
@@ -205,12 +269,17 @@ h3 {
     grid-template-columns: 1fr;
   }
 
-  .images-section, .description-section, .info-section {
-    grid-column: 1;
-  }
-
   .info-section {
     grid-template-columns: 1fr;
+  }
+
+  .images {
+    grid-template-columns: 1fr;
+  }
+
+  .back-link {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>

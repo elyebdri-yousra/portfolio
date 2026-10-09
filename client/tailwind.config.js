@@ -7,15 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        stone: {
-          400: '#a8a29e',
-          500: '#78716b',
-          600: '#57534e',
-          700: '#44403c',
-        }
+        primary: '#1e293b',
+        accent: '#3b82f6',
+        'accent-dark': '#1e40af',
+        'accent-light': '#60a5fa',
+        surface: '#f8fafc',
+        'surface-dark': '#e2e8f0',
       },
       fontFamily: {
-        cantarell: ['Cantarell', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       }
     },
   },

@@ -1,54 +1,125 @@
 <template>
-  <main class="container mx-auto p-4 flex flex-col lg:flex-row items-center justify-center gap-8 h-full max-w-full lg:w-[1200px]">
-    <!-- Image -->
-    <div class="w-full lg:w-auto flex justify-center">
-      <img
-        class="w-full max-w-[300px] sm:max-w-sm md:max-w-md lg:h-[600px] lg:w-auto object-cover rounded-2xl"
-        src="https://via.placeholder.com/400x600?text=Yousra+El+Yebdri"
-        alt="Portrait de Yousra El Yebdri, développeuse web et designer"
-        loading="lazy">
-    </div>
+  <div class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <!-- Text Content -->
+        <div>
+          <div class="mb-6">
+            <span class="inline-block px-4 py-2 bg-blue-100 text-accent rounded-full text-sm font-semibold mb-4">
+              👋 Bienvenue
+            </span>
+          </div>
 
-    <!-- Texte -->
-    <section aria-label="Introduction du portfolio de Yousra El Yebdri" class="text-left lg:text-left w-full px-4 sm:px-8">
-      <h1 class="text-4xl sm:text-5xl md:text-[69px] font-bold">EL YEBDRI Yousra</h1>
+          <h1 class="text-5xl sm:text-6xl font-bold text-primary mb-4">
+            Yousra
+            <span class="block text-accent">EL YEBDRI</span>
+          </h1>
 
-      <div class="flex items-center justify-between gap-4 my-4">
-        <hr class="flex-grow border-t border-stone-700">
-        <p class="text-3xl sm:text-4xl md:text-5xl text-stone-700 whitespace-nowrap">2026</p>
-      </div>
+          <p class="text-xl text-gray-600 mb-4 leading-relaxed">
+            Développeuse Web & Étudiante en BUT MMI
+          </p>
 
-      <p class="text-base sm:text-lg text-gray-800 mb-10">
-        Étudiante en BUT Métiers du Multimédia et de l'Internet et développeuse web en alternance, je conçois des interfaces modernes, accessibles et centrées utilisateur. J'aime transformer des besoins en solutions concrètes.
-      </p>
+          <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+            Je crée des expériences web modernes, accessibles et performantes. Passionnée par Vue.js, Node.js et le design centrés utilisateur.
+          </p>
 
-      <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-        <router-link
-          to="/about"
-          class="bg-[#DB9ECF] text-white px-8 py-4 rounded-xl hover:bg-[#c085b7] transition-colors text-base sm:text-lg flex items-center justify-center">
-          En savoir plus
-        </router-link>
-        <router-link
-          to="/projet"
-          class="border-2 border-[#DB9ECF] text-[#DB9ECF] px-8 py-4 rounded-xl hover:bg-[#DB9ECF] hover:text-white transition-colors text-base sm:text-lg flex items-center justify-center">
-          Voir mes projets
-        </router-link>
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4">
+            <router-link
+              to="/about"
+              class="inline-flex items-center justify-center px-8 py-4 bg-accent text-white rounded-lg font-semibold hover:bg-accent-dark transition-colors">
+              En savoir plus
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </router-link>
+            <router-link
+              to="/projets"
+              class="inline-flex items-center justify-center px-8 py-4 border-2 border-accent text-accent rounded-lg font-semibold hover:bg-accent hover:text-white transition-colors">
+              Voir mes projets
+              <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </router-link>
+          </div>
+
+          <!-- Stats -->
+          <div class="mt-12 grid grid-cols-3 gap-4">
+            <div>
+              <div class="text-3xl font-bold text-accent">7</div>
+              <div class="text-gray-600 text-sm">Projets</div>
+            </div>
+            <div>
+              <div class="text-3xl font-bold text-accent">6</div>
+              <div class="text-gray-600 text-sm">Compétences</div>
+            </div>
+            <div>
+              <div class="text-3xl font-bold text-accent">2+</div>
+              <div class="text-gray-600 text-sm">Ans d'exp</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="flex justify-center">
+          <div class="relative">
+            <div class="absolute inset-0 bg-accent opacity-20 rounded-3xl transform rotate-3 scale-105"></div>
+            <img
+              src="https://via.placeholder.com/500x600?text=Yousra"
+              alt="Yousra EL YEBDRI"
+              class="relative rounded-3xl shadow-xl w-full max-w-md object-cover">
+          </div>
+        </div>
       </div>
     </section>
-  </main>
+
+    <!-- Skills Section -->
+    <section class="bg-surface py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-primary mb-12 text-center">Stack Technologique</h2>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">⚡</div>
+            <h3 class="font-semibold text-primary">Frontend</h3>
+            <p class="text-gray-600 text-sm mt-2">Vue 3, Tailwind CSS, Vite</p>
+          </div>
+          <div class="bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🚀</div>
+            <h3 class="font-semibold text-primary">Backend</h3>
+            <p class="text-gray-600 text-sm mt-2">Node.js, Express.js, JWT</p>
+          </div>
+          <div class="bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">💾</div>
+            <h3 class="font-semibold text-primary">Database</h3>
+            <p class="text-gray-600 text-sm mt-2">PostgreSQL, SQL</p>
+          </div>
+          <div class="bg-white rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🐳</div>
+            <h3 class="font-semibold text-primary">Infra</h3>
+            <p class="text-gray-600 text-sm mt-2">Docker, Git, Linux</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h2 class="text-3xl font-bold text-primary mb-4">Projets en vedette</h2>
+      <p class="text-gray-600 mb-12">Décourez quelques projets récents qui mettent en avant mes compétences</p>
+
+      <router-link
+        to="/projets"
+        class="inline-flex items-center text-accent font-semibold hover:text-accent-dark transition-colors">
+        Voir tous les projets
+        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      </router-link>
+    </section>
+  </div>
 </template>
 
 <script setup>
 </script>
-
-<style scoped>
-main {
-  min-height: 100vh;
-}
-
-@media (max-width: 1024px) {
-  main {
-    flex-direction: column;
-  }
-}
-</style>

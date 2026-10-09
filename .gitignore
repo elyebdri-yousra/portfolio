@@ -1,3 +1,4 @@
 dump.sql
 config/bdd.php
 vendor/
+.DS_Store

@@ -37,7 +37,10 @@
       "Bash(curl -s http://localhost:3000/api/about/competences)",
       "Bash(curl -s http://localhost:5173)",
       "Bash(curl -s http://localhost:3000/api/projets)",
-      "Bash(curl -s http://localhost:3000/api/health)"
+      "Bash(curl -s http://localhost:3000/api/health)",
+      "Bash(awk '{print $2}')",
+      "Bash(xargs kill -9)",
+      "Bash(npm uninstall *)"
     ]
   }
 }

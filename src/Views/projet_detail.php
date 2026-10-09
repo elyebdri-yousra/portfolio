@@ -1,211 +1,215 @@
-<main class="flex-1 container mx-auto p-4 pb-24 max-w-[1440px] font-[Cantarell]" role="main" aria-label="Détail du projet sélectionné">
-    <!-- Titre et bouton retour -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center w-full gap-4 mb-4">
-        <h1 class="text-4xl font-bold" aria-label="Titre du projet : <?php echo strip_tags($projet['titre']); ?>">
+<main class="flex-1 container mx-auto p-4 pb-24 max-w-[1440px] font-[Cantarell]">
+
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+    
+        <h1 class="text-4xl font-bold">
             <?php echo html_entity_decode($projet['titre']); ?>
         </h1>
-        <div class="flex flex-wrap gap-2">
+    
+        <div class="flex gap-2 flex-wrap">
+    
             <?php if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) { ?>
                 <a href="index.php?page=projet_edit&id=<?php echo $projet['id'] ?>"
-                    class="bg-[#DB9ECF] text-white px-[80px] py-[20px] rounded-xl hover:bg-[#c085b7] transition-colors  sm:w-auto text-base sm:text-lg flex  items-center justify-center w-[300px]">
+                   class="bg-[#DB9ECF] text-white px-6 py-3 rounded-xl hover:bg-[#c085b7] transition">
                     Modifier
                 </a>
             <?php } ?>
+    
             <a href="index.php?page=projet#liste"
-                class="bg-[#DB9ECF] text-white px-[80px] py-[20px] rounded-xl hover:bg-[#c085b7] transition-colors  sm:w-auto text-base sm:text-lg flex  items-center justify-center w-[300px] ">
+               class="bg-[#DB9ECF] text-white px-6 py-3 rounded-xl hover:bg-[#c085b7] transition">
                 Retour
             </a>
+    
         </div>
     </div>
 
-    <!-- Carrousel d'images -->
-    <div class="bg-[#DB9ECF] rounded-xl w-full relative overflow-hidden h-[300px] sm:h-[400px] md:h-[470px]">
-        <div id="carousel" class="w-full h-full flex transition-transform duration-500 ease-in-out">
+    <!-- CARROUSEL -->
+    <div class="bg-[#DB9ECF] rounded-2xl w-full relative overflow-hidden h-[420px] mb-8">
+        <div id="carousel" class="w-full h-full flex transition-transform duration-500">
             <?php foreach ($images as $image) : ?>
-                <div class="swiper-slide min-w-full h-full">
-                    <img
-                        src="<?php echo html_entity_decode($image['img_path']); ?>"
-                        alt="Aperçu visuel du projet <?php echo strip_tags($projet['titre']); ?>"
-                        class="zoomable-img w-full h-full object-contain bg-[#F7F5EE] cursor-pointer"
-                        onclick="openLightbox('<?php echo html_entity_decode($image['img_path']); ?>')">
+                <div class="min-w-full h-full">
+                    <img src="<?php echo html_entity_decode($image['img_path']); ?>"
+                         class="w-full h-full object-contain bg-[#F7F5EE]">
                 </div>
             <?php endforeach; ?>
         </div>
-        <button onclick="moveCarousel(-1)" class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-black rounded-full p-2">&lt;</button>
-        <button onclick="moveCarousel(1)" class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white/50 hover:bg-white/80 text-black rounded-full p-2">&gt;</button>
+
+        <button onclick="moveCarousel(-1)" class="absolute top-1/2 left-2 bg-white/60 p-2 rounded-full">&lt;</button>
+        <button onclick="moveCarousel(1)" class="absolute top-1/2 right-2 bg-white/60 p-2 rounded-full">&gt;</button>
     </div>
 
-    <!-- Lightbox -->
-    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 hidden flex justify-center items-center z-50" onclick="closeLightbox()">
-        <img id="lightbox-img" src="" class="max-h-[90vh] max-w-[90vw] rounded shadow-xl" alt="Image en grand">
-    </div>
+    <!-- GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-    <!-- Grille 2 colonnes -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-        <!-- Colonne gauche -->
-        <div class="space-y-6">
-            <section class="rounded-xl bg-white p-4 shadow" aria-labelledby="description-titre">
-                <h3 id="description-titre" class="text-lg font-semibold mb-2">Description du projet</h3>
-                <p class="leading-7 mb-5">
-                    <?php echo nl2br(htmlspecialchars(html_entity_decode($projet['description'], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8')); ?></p>
+        <!-- ONGLET CONTENU -->
+        <div class="md:col-span-2">
+            <div class="bg-white rounded-2xl shadow-sm border">
 
-                <h3 class="text-lg font-semibold mb-2">Logiciels utilisés & Dates</h3>
-                <div class="flex flex-wrap gap-4 mb-2" aria-label="Logiciels utilisés dans le projet">
-                    <?php foreach ($logiciels as $logiciel) { ?>
-                        <div class="h-12 flex items-center justify-center">
-                            <img
-                                src="<?php echo html_entity_decode($logiciel['url_img']); ?>"
-                                alt="Logo du logiciel <?php echo html_entity_decode($logiciel['nomLogiciel']); ?>"
-                                class="max-h-12">
-                        </div>
-                    <?php } ?>
+                <!-- TABS (FIX MOBILE) -->
+                <div class="border-b overflow-x-auto md:overflow-visible">
+                    <div class="flex min-w-max md:min-w-0">
+
+                        <button class="tab-btn px-6 py-4 font-semibold text-[#DB9ECF] border-b-2 border-[#DB9ECF] whitespace-nowrap" data-tab="description">
+                            Description
+                        </button>
+
+                        <button class="tab-btn px-6 py-4 text-stone-500 whitespace-nowrap" data-tab="argumentaire">
+                            Argumentaire
+                        </button>
+
+                        <button class="tab-btn px-6 py-4 text-stone-500 whitespace-nowrap" data-tab="problemes">
+                            Problèmes
+                        </button>
+
+                    </div>
                 </div>
-                <p class="text-sm"><strong>Date :</strong> <?php echo html_entity_decode($projet['date']); ?></p>
-                <p class="text-sm"><strong>Date de création :</strong> <?php echo html_entity_decode($projet['dateCrea']); ?></p>
-            </section>
 
-            <section class="rounded-xl bg-white p-4 shadow" aria-labelledby="problemes-titre">
-                <h3 id="problemes-titre" class="text-lg font-semibold mb-2">Problèmes rencontrés et solutions apportées</h3>
-                <p class="leading-7">
-                    <?php echo nl2br(htmlspecialchars(html_entity_decode($projet['apprentissageCritique'], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8')); ?></p>
-            </section>
+                <!-- CONTENU -->
+                <div class="p-6 min-h-[260px]">
+
+                    <div class="tab-content" id="description">
+                        <div class="text-block overflow-hidden max-h-[180px] leading-relaxed text-stone-700 transition-all duration-300">
+                            <?php echo nl2br(htmlspecialchars(html_entity_decode($projet['description']))); ?>
+                        </div>
+                        <button class="toggle-btn hidden text-sm text-[#DB9ECF] mt-3">Lire plus</button>
+                    </div>
+
+                    <div class="tab-content hidden" id="argumentaire">
+                        <div class="text-block overflow-hidden max-h-[180px] leading-relaxed text-stone-700 transition-all duration-300">
+                            <?php echo nl2br(htmlspecialchars(html_entity_decode($projet['argumentaire']))); ?>
+                        </div>
+                        <button class="toggle-btn hidden text-sm text-[#DB9ECF] mt-3">Lire plus</button>
+                    </div>
+
+                    <div class="tab-content hidden" id="problemes">
+                        <div class="text-block overflow-hidden max-h-[180px] leading-relaxed text-stone-700 transition-all duration-300">
+                            <?php echo nl2br(htmlspecialchars(html_entity_decode($projet['apprentissageCritique']))); ?>
+                        </div>
+                        <button class="toggle-btn hidden text-sm text-[#DB9ECF] mt-3">Lire plus</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
-        <!-- Colonne droite -->
+        <!-- SIDEBAR -->
         <div class="space-y-6">
-            <article class="rounded-xl bg-white p-4 shadow relative" aria-labelledby="competences-titre">
-                <h3 id="competences-titre" class="text-lg font-semibold mb-2">Compétences du projet</h3>
-                <div id="competences-content" class="max-h-[200px] overflow-hidden transition-all duration-300 ease-in-out">
-                    <div class="grid grid-cols-3 grid-rows-2 gap-4">
-                        <?php foreach ($competences as $competence) { ?>
-                            <div>
-                                <p> <?php echo nl2br(htmlspecialchars(html_entity_decode($competence['nom'], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8')); ?></p>
-                                </p>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-            </article>
 
-            <article class="rounded-xl bg-white p-4 shadow relative" aria-labelledby="argumentaire-titre">
-                <h3 id="argumentaire-titre" class="text-lg font-semibold mb-2">Argumentaire du projet</h3>
-                <div id="argumentaire-content" class="max-h-[200px] overflow-hidden transition-all duration-300 ease-in-out">
-                    <p class="leading-7">
-                        <?php echo nl2br(htmlspecialchars(html_entity_decode($projet['argumentaire'], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8')); ?>
-                    </p>
+            <section class="rounded-2xl bg-white p-6 shadow-sm border">
+                <h3 class="text-lg font-semibold text-[#DB9ECF] mb-3">Compétences</h3>
+                <div class="flex flex-wrap gap-2">
+                    <?php foreach ($competences as $competence) { ?>
+                        <span class="bg-[#F7F5EE] px-3 py-1 rounded-full text-sm">
+                            <?php echo htmlspecialchars($competence['nom']); ?>
+                        </span>
+                    <?php } ?>
                 </div>
-                <button id="toggle-button" class="mt-2 text-sm text-blue-600 hover:underline hidden">
-                    Afficher plus
-                </button>
-            </article>
+            </section>
 
-            <?php if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1 || $_SESSION['user']['idRole'] == 2)) { ?>
-                <div class="rounded-xl bg-white p-4 shadow" id="commentaire">
-                    <h3 class="text-xl font-[Cantarell] text-center font-semibold mb-4">Commentaires</h3>
-                    <div id="commentaires-container" aria-live="polite" class="space-y-2 h-[300px] overflow-y-scroll scrollbar-none">
-                        <?php if (!empty($commentaires)) : ?>
-                            <?php foreach ($commentaires as $commentaire) : ?>
-                                <article class="flex <?php echo $user_id == $commentaire['userId'] ? 'justify-end' : 'justify-start'; ?>" aria-label="Commentaire de <?php echo $commentaire['prenom'] . ' ' . $commentaire['nom']; ?>">
-                                    <div class="bg-[#D9D9D9] max-w-[80%] p-2 rounded-md">
-                                        <div class="flex justify-between mb-1 text-sm font-semibold">
-                                            <span><?php echo $commentaire['prenom'] . ' ' . $commentaire['nom']; ?></span>
-                                        </div>
-                                        <p class="text-sm"><?php echo $commentaire['commentaire'] ?? ''; ?></p>
-                                    </div>
-                                </article>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <p class="text-gray-500 text-center">Aucun commentaire disponible.</p>
-                        <?php endif; ?>
-                    </div>
+            <section class="rounded-2xl bg-white p-6 shadow-sm border">
+                <h3 class="text-lg font-semibold text-[#DB9ECF] mb-3">Logiciels</h3>
 
-                    <!-- Formulaire -->
-                    <form method="POST" action="index.php?page=addCommentaire#commentaire" class="flex flex-col sm:flex-row items-center justify-center mt-4 gap-2 sm:gap-0">
-                        <input type="hidden" name="id" value="<?php echo $projet['id']; ?>">
-                        <input
-                            type="text"
-                            name="commentaire"
-                            id="commentaire"
-                            required
-                            class="w-full sm:w-[75%] h-10 bg-[#D9D9D9] indent-2 rounded-sm border border-[#DB9ECF] focus:outline-none"
-                            placeholder="Écrire votre commentaire">
-                        <input
-                            type="submit"
-                            value="Envoyer"
-                            class="w-full sm:w-[25%] h-10 bg-[#DB9ECF] cursor-pointer hover:bg-white hover:text-[#DB9ECF] font-semibold text-white rounded-sm border border-[#DB9ECF] transition-colors duration-200">
-                    </form>
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <?php foreach ($logiciels as $logiciel) { ?>
+                        <img src="<?php echo html_entity_decode($logiciel['url_img']); ?>" class="h-10">
+                    <?php } ?>
                 </div>
-            <?php } ?>
+
+                <p class="text-sm text-stone-600">Date : <?php echo $projet['date']; ?></p>
+                <p class="text-sm text-stone-600">Création : <?php echo $projet['dateCrea']; ?></p>
+            </section>
+
         </div>
     </div>
 </main>
-<!-- Script JS -->
+
 <script>
-    // Carrousel
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* ======================
+       CARROUSEL
+    ====================== */
     let currentIndex = 0;
     const carousel = document.getElementById('carousel');
-    const totalImages = carousel.children.length;
 
-    function moveCarousel(direction) {
-        const newIndex = currentIndex + direction;
+    if (carousel) {
+        const totalImages = carousel.children.length;
 
-        if (newIndex >= totalImages) {
-            currentIndex = 0;
-            carousel.style.transition = 'none';
-            carousel.style.transform = `translateX(0%)`;
-            setTimeout(() => {
-                carousel.style.transition = 'transform 0.5s ease-in-out';
-            }, 0);
-        } else if (newIndex < 0) {
-            currentIndex = totalImages - 1;
-            carousel.style.transition = 'none';
-            carousel.style.transform = `translateX(-${(totalImages - 1) * 100}%)`;
-            setTimeout(() => {
-                carousel.style.transition = 'transform 0.5s ease-in-out';
-            }, 0);
-        } else {
-            currentIndex = newIndex;
+        window.moveCarousel = function(direction) {
+            currentIndex = (currentIndex + direction + totalImages) % totalImages;
             carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-        }
+        };
     }
 
-    carousel.style.transition = 'transform 0.5s ease-in-out';
+    /* ======================
+       FONCTION LIRE PLUS
+    ====================== */
+    function initReadMore(container) {
+        const blocks = container.querySelectorAll(".text-block");
 
-    // Argumentaire toggle
-    document.addEventListener("DOMContentLoaded", function() {
-        const content = document.getElementById("argumentaire-content");
-        const button = document.getElementById("toggle-button");
-        const commentaires = document.getElementById("commentaires-container");
+        blocks.forEach((block) => {
+            const button = block.nextElementSibling;
 
-        if (content && button && content.scrollHeight > 200) {
-            button.classList.remove("hidden");
-        }
+            if (!button) return;
 
-        if (commentaires) {
-            commentaires.scrollTop = commentaires.scrollHeight;
-        }
+            // reset
+            block.style.maxHeight = "180px";
+            button.classList.add("hidden");
 
-        let expanded = false;
-        button?.addEventListener("click", function() {
-            expanded = !expanded;
-            content.classList.toggle("max-h-[200px]");
-            content.classList.toggle("overflow-hidden");
-            button.textContent = expanded ? "Afficher moins" : "Afficher plus";
+            // attendre le rendu
+            requestAnimationFrame(() => {
+                if (block.scrollHeight > 180) {
+                    button.classList.remove("hidden");
+                }
+            });
+
+            let expanded = false;
+
+            button.onclick = () => {
+                expanded = !expanded;
+
+                if (expanded) {
+                    block.style.maxHeight = block.scrollHeight + "px";
+                    button.textContent = "Lire moins";
+                } else {
+                    block.style.maxHeight = "180px";
+                    button.textContent = "Lire plus";
+                }
+            };
+        });
+    }
+
+    /* ======================
+       TABS
+    ====================== */
+    const buttons = document.querySelectorAll(".tab-btn");
+    const contents = document.querySelectorAll(".tab-content");
+
+    // init premier onglet visible
+    const firstTab = document.getElementById("description");
+    if (firstTab) {
+        initReadMore(firstTab);
+    }
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            buttons.forEach(b => {
+                b.classList.remove("border-[#DB9ECF]", "text-[#DB9ECF]", "border-b-2");
+                b.classList.add("text-stone-500");
+            });
+
+            contents.forEach(c => c.classList.add("hidden"));
+
+            btn.classList.add("border-[#DB9ECF]", "text-[#DB9ECF]", "border-b-2");
+
+            const activeTab = document.getElementById(btn.dataset.tab);
+            activeTab.classList.remove("hidden");
+
+            initReadMore(activeTab);
         });
     });
 
-    // Lightbox
-    function openLightbox(src) {
-        const lightbox = document.getElementById("lightbox");
-        const lightboxImg = document.getElementById("lightbox-img");
-        lightboxImg.src = src;
-        lightbox.classList.remove("hidden");
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-        const lightbox = document.getElementById("lightbox");
-        lightbox.classList.add("hidden");
-        document.body.style.overflow = '';
-    }
+});
 </script>

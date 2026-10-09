@@ -94,7 +94,6 @@ CREATE TABLE projet_competence(
 );
 
 
-
 INSERT INTO competences(nom) VALUES('Développer');
 INSERT INTO competences(nom) VALUES('Concevoir');
 INSERT INTO competences(nom) VALUES('Entreprendre');
@@ -107,3 +106,6 @@ INSERT INTO role(nom) VALUES ('Administrateur');
 INSERT INTO role(nom) VALUES ('Evaluateur');
 INSERT INTO role(nom) VALUES ('En attente');
 INSERT INTO role(nom) VALUES ('Refusé');
+
+INSERT INTO utilisateur(nom,prenom,email,mdp,idRole) VALUES ('Yousra', 'El Yebdri', 'admin@dev.fr','$2y$10$yb8MmqGrC4XcnrIeHkNnR.KwhCfo3Ifhe4jhA4BIxyxdAzlliayyG', 1);
+

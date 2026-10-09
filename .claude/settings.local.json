@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker-compose -f /Users/yousraelyebdri/portfolio/docker-compose.yml ps)",
+      "Bash(docker compose *)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Fix: Rename dockerFile to Dockerfile for Docker recognition *)",
+      "Bash(gh auth *)",
+      "Bash(gh repo *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git merge *)",
+      "Bash(git commit *)",
+      "Bash(gh api *)",
+      "Bash(git fetch *)",
+      "Bash(rsync -avz -4 --exclude='config/bdd.php' --exclude='dump.sql' tili9541@elyebdri-yousra.com:~/elyebdri-yousra.com/portfolio/ ./)",
+      "Bash(sshpass -p 'agP7-nXY5-a96]' rsync -avz -4 --exclude='config/bdd.php' --exclude='dump.sql' --exclude='.git' tili9541@elyebdri-yousra.com:~/elyebdri-yousra.com/portfolio/ ./)",
+      "Bash(brew install *)",
+      "Bash(php -r \"echo password_hash\\('Test123!', PASSWORD_DEFAULT\\);\")",
+      "Bash(php -r \"echo password_hash\\('admin123', PASSWORD_DEFAULT\\);\")",
+      "Bash(git checkout *)"
+    ]
+  }
+}

@@ -1,23 +1,40 @@
-services:
-  web:
-    build: .
-    ports:
-      - "8080:80"
-    volumes:
-      - .:/var/www/html
-    depends_on:
-      - db
+version: '3.8'
 
+services:
   db:
-    image: mariadb:11
+    image: postgres:16-alpine
     environment:
-      MARIADB_ROOT_PASSWORD: root
-      MARIADB_DATABASE: tili9541_portfolio
-      MARIADB_USER: tili9541_hsn7sr
-      MARIADB_PASSWORD: local
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: portfolio_user
+      POSTGRES_PASSWORD: portfolio_pass
+    ports:
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
-      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - postgres_data:/var/lib/postgresql/data
+      - ./server/migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portfolio_user -d portfolio"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://portfolio_user:portfolio_pass@db:5432/portfolio
+      JWT_SECRET: dev-secret-key-change-in-prod
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    command: npm run dev
 
 volumes:
-  db_data:
+  postgres_data:

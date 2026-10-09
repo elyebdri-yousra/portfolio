@@ -5,7 +5,7 @@
       &copy;
       <a href="mailto:yousra.elyebdri@icloud.com"
          class="text-stone-800 underline hover:no-underline">
-         EL YEBDRI Yousra - 2025
+         EL YEBDRI Yousra - 2026
       </a>
     </p>
   </div>

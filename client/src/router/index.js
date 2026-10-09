@@ -7,6 +7,7 @@ import About from '../pages/About.vue';
 import Projets from '../pages/Projets.vue';
 import ProjetDetail from '../pages/ProjetDetail.vue';
 import Veille from '../pages/Veille.vue';
+import Contact from '../pages/Contact.vue';
 import Auth from '../pages/Auth.vue';
 import AdminUtilisateurs from '../pages/Admin/Utilisateurs.vue';
 
@@ -16,6 +17,7 @@ const routes = [
   { path: '/projets', component: Projets },
   { path: '/projets/:id', component: ProjetDetail },
   { path: '/veille', component: Veille },
+  { path: '/contact', component: Contact },
   { path: '/auth', component: Auth },
   {
     path: '/admin/utilisateurs',

@@ -5,6 +5,7 @@ import { pool } from './models/db.js';
 import authRoutes from './routes/auth.js';
 import projetRoutes from './routes/projets.js';
 import usersRoutes from './routes/users.js';
+import aboutRoutes from './routes/about.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/projets', projetRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/about', aboutRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

@@ -9,7 +9,7 @@
           <li><router-link to="/about">À propos</router-link></li>
           <li><router-link to="/projets">Projets</router-link></li>
           <li><router-link to="/veille">Veille</router-link></li>
-          <li><a href="mailto:yousra.elyebdri@icloud.com">Contact</a></li>
+          <li><router-link to="/contact">Contact</router-link></li>
           <li v-if="!authStore.isAuthenticated">
             <router-link to="/auth">Connexion</router-link>
           </li>

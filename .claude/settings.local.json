@@ -30,7 +30,13 @@
       "Bash(npm ls *)",
       "Bash(curl -s http://localhost:5173/)",
       "Bash(curl -s -X POST http://localhost:3000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"admin@test.com\",\"password\":\"admin123\"}')",
-      "Bash(node --eval ' *)"
+      "Bash(node --eval ' *)",
+      "Bash(docker-compose up *)",
+      "Bash(curl -s http://localhost:3000/api/about/parcours)",
+      "Bash(curl -s http://localhost:3000/api/about/formations)",
+      "Bash(curl -s http://localhost:3000/api/about/competences)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -s http://localhost:3000/api/projets)"
     ]
   }
 }

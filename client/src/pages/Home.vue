@@ -9,10 +9,8 @@
             <!-- Outer gradient shape -->
             <div class="absolute inset-0 bg-gradient-to-br from-accent via-accent2 to-accent3 rounded-4xl transform rotate-12"></div>
             <!-- Inner avatar area -->
-            <div class="absolute inset-4 bg-white rounded-3xl flex items-center justify-center shadow-2xl">
-              <div class="text-center">
-                <div class="text-9xl">👩‍💻</div>
-              </div>
+            <div class="absolute inset-4 bg-white rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden">
+              <img :src="portraitImage" alt="Yousra EL YEBDRI" class="w-full h-full object-cover">
             </div>
           </div>
         </div>
@@ -59,4 +57,5 @@
 </template>
 
 <script setup>
+import portraitImage from '../assets/img/PostMe.png';
 </script>

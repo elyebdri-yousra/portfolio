@@ -36,7 +36,8 @@
       "Bash(curl -s http://localhost:3000/api/about/formations)",
       "Bash(curl -s http://localhost:3000/api/about/competences)",
       "Bash(curl -s http://localhost:5173)",
-      "Bash(curl -s http://localhost:3000/api/projets)"
+      "Bash(curl -s http://localhost:3000/api/projets)",
+      "Bash(curl -s http://localhost:3000/api/health)"
     ]
   }
 }

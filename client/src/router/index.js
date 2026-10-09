@@ -9,6 +9,8 @@ import ProjetDetail from '../pages/ProjetDetail.vue';
 import Veille from '../pages/Veille.vue';
 import Contact from '../pages/Contact.vue';
 import Auth from '../pages/Auth.vue';
+import AdminIndex from '../pages/Admin/Index.vue';
+import AdminAbout from '../pages/Admin/About.vue';
 import AdminUtilisateurs from '../pages/Admin/Utilisateurs.vue';
 
 const routes = [
@@ -19,6 +21,16 @@ const routes = [
   { path: '/veille', component: Veille },
   { path: '/contact', component: Contact },
   { path: '/auth', component: Auth },
+  {
+    path: '/admin',
+    component: AdminIndex,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
+  {
+    path: '/admin/about',
+    component: AdminAbout,
+    meta: { requiresAuth: true, requiresAdmin: true }
+  },
   {
     path: '/admin/utilisateurs',
     component: AdminUtilisateurs,

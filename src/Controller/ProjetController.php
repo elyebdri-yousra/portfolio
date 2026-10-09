@@ -28,29 +28,20 @@ class ProjetController extends Controller
 
         $logicielModel = new Logiciel();
         $logiciels = $logicielModel->getAllLogiciel();
-
+        // Je veux une image pour présenter le projet -> Thumbnail.
+        // Je récupère le projet, c'est un array, j'y ajoute urlimg pour lui donner le lieu de la première image
         $competenceModel = new Competence();
         $competences = $competenceModel->getAllCompetence();
-
         $nb_projet = count($projets);
-
         for ($i = 0; $i < $nb_projet; $i++) {
             $urlimg = $projetModel->getThumbnailById($projets[$i]['id']);
             $projets[$i]['urlimg'] = $urlimg['img_path'] ?? "";
-
             $projets[$i]['competences'] = $competenceModel->getCompetenceByProjet($projets[$i]['id']);
-            $projets[$i]['logiciels'] = $logicielModel->getLogicielByProject($projets[$i]['id']);
         }
-
         if (isset($_SESSION['error'])) {
             unset($_SESSION['error']);
         }
-
-        $this->render('projet', [
-            'projets' => $projets,
-            'logiciels' => $logiciels,
-            'competences' => $competences
-        ]);
+        $this->render('projet', ['projets' => $projets, 'logiciels' => $logiciels, 'competences' => $competences]);
     }
 
     public function show($id)
@@ -72,6 +63,12 @@ class ProjetController extends Controller
         }
     }
 
+    /**
+     * Fonction pour supprimer un projet
+     *
+     * @param int $id
+     * @return void
+     */
     public function supprimer(int $id)
     {
         $projetModel = new Projet();
@@ -79,9 +76,7 @@ class ProjetController extends Controller
         if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
             $images = $imagesModel->getAllImageByProjectId($id);
             foreach ($images as $image) {
-                if (file_exists($image['img_path'])) {
-                    unlink($image['img_path']);
-                }
+                unlink($image['img_path']);
             }
             $projetModel->deleteProjetById($id);
             $this->index();
@@ -97,6 +92,7 @@ class ProjetController extends Controller
         $user_id = $_SESSION['user']['id'];
         if (isset($_SESSION['user']) && (($_SESSION['user']['idRole'] == 1) || ($_SESSION['user']['idRole'] == 2))) {
             try {
+
                 $commentaireModel = new Commentaire();
                 $commentaireModel->addCommentaire($projet_id, $user_id, $commentaire);
                 header('Location: index.php?page=projet_show&id=' . $projet_id . '#commentaire');
@@ -109,67 +105,51 @@ class ProjetController extends Controller
     }
 
 
+
+    // Si tu ne mettais qu'une seule image par projet, la fonction ne serait pas obligatoire.
+    // Comme il y en à plusieurs (2, 3, 4, 9, 27), il faut créer une fonction qui enregistre toutes ces images
     private function loadImage($titre, $date, $annee_but, $type)
     {
-        $image = new Image();
+
+        $image = new Image(); // Le model qui vas servir à enregistrer
+
+        // Il faut que je récupère l'Id du projet dans lequel je dois inserer les images
         $projet = new Projet();
         $id = $projet->getProjetByCol($titre, $date, $annee_but, $type);
+        // Pour accéder aux images, avec php il existe $_FILES -> Qui contient toutes les images
+        // Source pour comprendre https://www.w3schools.com/php/php_file_upload.asp
+        $files_paths = "./storage/projects_img/"; // l'endroit ou ranger les images
+        // Quand tu envoies un fichier depuis ton PC vers le site web, c'est le site web qui garde l'image dans 
+        // son stockage. Donc toutes les images iront dans se dossier.
+        // !!!!!!!!!! Pour pas alourdir le code, y'a l'explication en bas !!!!!!!!! \\    
 
-        if (empty($_FILES['images']['name'][0])) {
-            return;
-        }
-
-        $files_paths = "./storage/projects_img/";
+        // Avant de commencer ma boucle je dois connaitre le nombre d'image que j'ai envoyé à l'application.
+        // Il existe bcp de technique mais la plus simple est de compter les noms
         $nombre_images = count($_FILES['images']['name']);
-
+        // A partir de maintenant je peux commencer ma boucle. Pour rappel mon but est de récupérer le nom, le type, full_path etc etc
+        // Donc pour ma boucle je me place dans $_FILES['images']
+        // Si tu te demande quel type de boucle il faut utiliser, ici il est plus intelligent d'utiliser une boucle for et pas une foreach. Comme j'accèdes à des données qui sont dans un tableau, ca m'évitera de faire bcp de boucle
         for ($i = 0; $i < $nombre_images; $i++) {
-
-            if ($_FILES['images']['error'][$i] !== UPLOAD_ERR_OK) {
-                continue;
-            }
-
-            // 🔧 NETTOYAGE DU NOM DE FICHIER
-            $nom_original = $_FILES["images"]["name"][$i];
-
-            if (class_exists('Normalizer')) {
-                $nom_original = \Normalizer::normalize($nom_original, \Normalizer::FORM_C);
-            }
-
-            $extension = strtolower(pathinfo($nom_original, PATHINFO_EXTENSION));
-            $nom_sans_ext = pathinfo($nom_original, PATHINFO_FILENAME);
-
-            $nom_propre = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $nom_sans_ext);
-            if ($nom_propre === false) {
-                $nom_propre = $nom_sans_ext;
-            }
-            $nom_propre = preg_replace('/[^A-Za-z0-9_-]/', '_', $nom_propre);
-            $nom_propre = preg_replace('/_+/', '_', $nom_propre);
-            $nom_propre = trim($nom_propre, '_');
-
-            if (empty($nom_propre)) {
-                $nom_propre = 'image_' . uniqid();
-            }
-
-            $nom_final = $nom_propre . '_' . time() . '_' . $i . '.' . $extension;
-            $nom_fichier = $files_paths . $nom_final;
-
-            $check = getimagesize($_FILES["images"]["tmp_name"][$i]);
+            $nom_fichier = $files_paths . basename($_FILES["images"]["name"][$i]); // nom_fichier c'est le nom de ton
+            $type_fichier = strtolower(pathinfo($nom_fichier, PATHINFO_EXTENSION)); // Permet de prendre le type de fichier pour vérifier si c'est une image
+            $check = getimagesize($_FILES["images"]["tmp_name"][$i]); // Permet de vérifier la taille de l'image
             $is_uploaded = 0;
-
             if ($check !== false) {
-                if (in_array($extension, ["jpg", "png", "jpeg", "webp"])) {
-                    if (move_uploaded_file($_FILES["images"]["tmp_name"][$i], $nom_fichier)) {
+                if ($type_fichier == "jpg" || $type_fichier == "png" || $type_fichier == "jpeg") { // On vérifie le type de fichier
+                    if (!file_exists($nom_fichier)) {
+                        move_uploaded_file($_FILES["images"]["tmp_name"][$i], $nom_fichier);
+                        $is_uploaded = 1;
+                    } else {
                         $is_uploaded = 1;
                     }
                 } else {
-                    continue;
+                    $projet->deleteProjetById($id);
                 }
             } else {
-                continue;
+                $projet->deleteProjetById($id);
             }
-
             if ($is_uploaded == 1) {
-                $image->ajoutImage($nom_final, $nom_fichier, $id);
+                $image->ajoutImage(basename($_FILES["images"]["name"][$i]), $nom_fichier, $id);
             }
         }
     }
@@ -198,6 +178,9 @@ class ProjetController extends Controller
         }
     }
 
+    // Cette fonction permet de mettre un 1 si un élément est déjà utilisé par un projet.
+    // En gros : je prends tous les logiciels de la bdd, et je regarde si le projet l'a déjà.
+    // Si il l'a déjà je met un 1 sinon je met un 0
     public function checkUsed($used, $notUsed)
     {
         for ($i = 0; $i < count($notUsed); $i++) {
@@ -221,9 +204,6 @@ class ProjetController extends Controller
 
         foreach ($images as $image) {
             if ($image['img_path'] == "./storage/projects_img/" . $image_nom) {
-                if (file_exists($image['img_path'])) {
-                    unlink($image['img_path']);
-                }
                 $imageModel->deleteUniqueImageByProjectId($id, $image_nom);
                 break;
             }
@@ -238,39 +218,6 @@ class ProjetController extends Controller
         $projet = $projetModel->getProjetById($id);
         $this->loadImage($projet['titre'], $projet['date'], $projet['dateCrea'], $projet['typeProjet']);
         $this->editProjet($id);
-    }
-
-    /**
-     * 🆕 Méthode AJAX : reçoit en POST un id_projet + un tableau d'IDs d'images
-     * dans l'ordre désiré, et met à jour la colonne `ordre` en base.
-     */
-    public function reorder_img()
-    {
-        header('Content-Type: application/json');
-
-        // Sécurité : seuls les admins peuvent réordonner
-        if (!isset($_SESSION['user']) || $_SESSION['user']['idRole'] != 1) {
-            http_response_code(403);
-            echo json_encode(['success' => false, 'message' => 'Non autorisé']);
-            exit;
-        }
-
-        $idProjet = filter_input(INPUT_POST, 'projet_id', FILTER_SANITIZE_NUMBER_INT);
-        $orderRaw = $_POST['order'] ?? null;
-
-        if (!$idProjet || !is_array($orderRaw) || empty($orderRaw)) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Paramètres invalides']);
-            exit;
-        }
-
-        $orderedIds = array_map('intval', $orderRaw);
-
-        $imageModel = new Image();
-        $ok = $imageModel->updateOrder((int) $idProjet, $orderedIds);
-
-        echo json_encode(['success' => $ok]);
-        exit;
     }
 
     public function update_projet()
@@ -315,6 +262,7 @@ class ProjetController extends Controller
     {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Filtrage des entrées utilisateur
             $titre = filter_input(INPUT_POST, 'titre', FILTER_SANITIZE_SPECIAL_CHARS);
             $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_SPECIAL_CHARS);
             $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -323,7 +271,7 @@ class ProjetController extends Controller
             $type = filter_input(INPUT_POST, 'type', FILTER_SANITIZE_SPECIAL_CHARS);
             $argumentaire = filter_input(INPUT_POST, 'argumentaire', FILTER_SANITIZE_SPECIAL_CHARS);
             $commentaires = filter_input(INPUT_POST, 'commentaires', FILTER_SANITIZE_SPECIAL_CHARS);
-            $idUser = $_SESSION['user']['id'];
+            $idUser = $_SESSION['user']['id']; // Récupérer l'ID utilisateur connecté
 
             $logiciels = filter_input_array(INPUT_POST, [
                 'logiciels' => [
@@ -343,6 +291,8 @@ class ProjetController extends Controller
             $projetModel = new Projet();
             $success = $projetModel->addProjet($titre, $description, $date, $annee_but, $apprentissage, $type, $argumentaire, $idUser);
 
+            // Fonction pour associer les logiciels et les projets
+
             if ($success) {
                 $this->loadImage($titre, $date, $annee_but, $type);
                 $this->retriveLogiciel($titre, $date, $annee_but, $type, $logiciels);
@@ -361,9 +311,11 @@ class ProjetController extends Controller
         $competenceModel = new Competence();
         $competenceModel->desassociateAllProjetCompetence($id_projet);
         if ($competences['competences'] != null) {
+
             foreach ($competences['competences'] as $id) {
                 $competence = $competenceModel->getCompetenceById($id);
                 if ($competence) {
+
                     $competenceModel->associateProjetCompetence($id_projet, $competence['id']);
                 }
             }
@@ -378,9 +330,11 @@ class ProjetController extends Controller
         $competenceModel = new Competence();
         $competenceModel->desassociateAllProjetCompetence($projet_id);
         if ($competences['competences'] != null) {
+
             foreach ($competences['competences'] as $id) {
                 $competence = $competenceModel->getCompetenceById($id);
                 if ($competence) {
+
                     $competenceModel->associateProjetCompetence($projet_id, $competence['id']);
                 }
             }
@@ -406,9 +360,11 @@ class ProjetController extends Controller
         $projetModel = new Projet();
         $projet_id = $projetModel->getProjetByCol($titre, $date, $annee_but, $type);
 
+
         $logicielModel = new Logiciel();
         $logicielModel->desassociateAllProjetLogiciel($projet_id);
         if ($logiciels['logiciels'] != null) {
+
             foreach ($logiciels['logiciels'] as $id) {
                 $logiciel = $logicielModel->getLogicielById($id);
                 if ($logiciel) {

@@ -37,29 +37,6 @@ switch ($page) {
         $controller = new AboutController();
         $controller->index();
         break;
-    // ---- PARCOURS ----
-    case 'about_save_parcours':
-        (new AboutController())->saveParcours();
-        break;
-    case 'about_delete_parcours':
-        (new AboutController())->deleteParcours();
-        break;
- 
-    // ---- FORMATIONS ----
-    case 'about_save_formation':
-        (new AboutController())->saveFormation();
-        break;
-    case 'about_delete_formation':
-        (new AboutController())->deleteFormation();
-        break;
- 
-    // ---- COMPÉTENCES ----
-    case 'about_save_competence':
-        (new AboutController())->saveCompetence();
-        break;
-    case 'about_delete_competence':
-        (new AboutController())->deleteCompetence();
-        break;
     case 'veille':
         $controller = new VeilleController();
         $controller->index();
@@ -162,24 +139,6 @@ switch ($page) {
         } else {
             $controller = new ErrorController();
             $controller->render('error');
-        }
-        break;
-    case 'reorder_image_projet':
-        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
-            $controller = new ProjetController();
-            $controller->reorder_img();
-        } else {
-            http_response_code(403);
-            echo json_encode(['success' => false, 'message' => 'Non autorisé']);
-        }
-        break;
-    case 'addLogiciel_ajax':
-        if (isset($_SESSION['user']) && ($_SESSION['user']['idRole'] == 1)) {
-            $controller = new LogicielController();
-            $controller->create_ajax();
-        } else {
-            http_response_code(403);
-            echo json_encode(['success' => false, 'message' => 'Non autorisé']);
         }
         break;
     case 'auth':

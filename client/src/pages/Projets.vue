@@ -1,64 +1,101 @@
 <template>
-  <div class="projets">
-    <h1>Projets</h1>
-    <p class="subtitle">Explorez les projets qui jalonnent mon parcours</p>
+  <div class="min-h-screen bg-white">
+    <!-- Header -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h1 class="text-5xl font-bold text-primary mb-4">Projets</h1>
+      <p class="text-xl text-gray-600">Explorez les projets qui jalonnent mon parcours professionnel et académique</p>
+    </section>
 
-    <div class="filters">
-      <div class="filter-group">
-        <label>Type</label>
-        <select v-model="selectedType" @change="loadProjets">
-          <option value="">-- Tous les types --</option>
-          <option v-for="type in types" :key="type.id" :value="type.id">
-            {{ type.nom }}
-          </option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Compétences</label>
-        <select v-model="selectedCompetences" multiple @change="loadProjets">
-          <option v-for="comp in competences" :key="comp.id" :value="comp.id">
-            {{ comp.nom }}
-          </option>
-        </select>
-      </div>
-
-      <button @click="resetFilters" class="btn-secondary">Réinitialiser</button>
-    </div>
-
-    <div v-if="loading" class="loading">Chargement...</div>
-
-    <div v-else-if="projets.length === 0" class="empty">
-      Aucun projet trouvé
-    </div>
-
-    <div v-else class="projets-grid">
-      <router-link v-for="projet in projets" :key="projet.id"
-                   :to="`/projets/${projet.id}`"
-                   class="projet-card">
-        <img v-if="projet.images && projet.images[0]"
-             :src="`/storage/${projet.images[0]}`"
-             :alt="projet.titre"
-             @error="$event.target.src = 'https://via.placeholder.com/300x200'">
-        <img v-else src="https://via.placeholder.com/300x200" :alt="projet.titre">
-
-        <div class="projet-content">
-          <h3>{{ projet.titre }}</h3>
-
-          <div v-if="projet.logiciels && projet.logiciels.length > 0" class="tags">
-            <span v-for="logiciel in projet.logiciels" :key="logiciel" class="tag">
-              {{ logiciel }}
-            </span>
+    <!-- Filters -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <div class="bg-surface rounded-lg p-6 shadow-sm">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Type Filter -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Type de projet</label>
+            <select v-model="selectedType" @change="loadProjets" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent">
+              <option value="">Tous les types</option>
+              <option v-for="type in types" :key="type.id" :value="type.id">
+                {{ type.nom }}
+              </option>
+            </select>
           </div>
 
-          <div v-if="projet.competences && projet.competences.length > 0" class="competences">
-            <span v-for="comp in projet.competences" :key="comp" class="comp-tag">
-              {{ comp }}
-            </span>
+          <!-- Competences Filter -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Compétences</label>
+            <select v-model="selectedCompetences" multiple @change="loadProjets" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent">
+              <option v-for="comp in competences" :key="comp.id" :value="comp.id">
+                {{ comp.nom }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Reset Button -->
+          <div class="flex items-end">
+            <button @click="resetFilters" class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors">
+              Réinitialiser
+            </button>
           </div>
         </div>
-      </router-link>
-    </div>
+      </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div v-if="loading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-accent"></div>
+        <p class="text-gray-600 mt-4">Chargement des projets...</p>
+      </div>
+
+      <div v-else-if="projets.length === 0" class="text-center py-12">
+        <p class="text-xl text-gray-600">Aucun projet trouvé avec ces critères</p>
+      </div>
+
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <router-link v-for="projet in projets" :key="projet.id"
+                     :to="`/projets/${projet.id}`"
+                     class="group bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+          <!-- Image -->
+          <div class="relative h-48 bg-gray-200 overflow-hidden">
+            <img v-if="projet.images && projet.images[0]"
+                 :src="`/storage/${projet.images[0]}`"
+                 :alt="projet.titre"
+                 @error="$event.target.src = 'https://via.placeholder.com/300x200'"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <img v-else src="https://via.placeholder.com/300x200" :alt="projet.titre"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          </div>
+
+          <!-- Content -->
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">{{ projet.titre }}</h3>
+
+            <!-- Technologies -->
+            <div v-if="projet.logiciels && projet.logiciels.length > 0" class="mb-3">
+              <div class="flex flex-wrap gap-2">
+                <span v-for="logiciel in projet.logiciels.slice(0, 3)" :key="logiciel" class="text-xs bg-blue-100 text-accent px-2 py-1 rounded">
+                  {{ logiciel }}
+                </span>
+                <span v-if="projet.logiciels.length > 3" class="text-xs text-gray-500">
+                  +{{ projet.logiciels.length - 3 }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div v-if="projet.competences && projet.competences.length > 0" class="flex flex-wrap gap-2">
+              <span v-for="comp in projet.competences.slice(0, 2)" :key="comp" class="text-xs bg-accent text-white px-2 py-1 rounded">
+                {{ comp }}
+              </span>
+              <span v-if="projet.competences.length > 2" class="text-xs text-gray-500">
+                +{{ projet.competences.length - 2 }}
+              </span>
+            </div>
+          </div>
+        </router-link>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -111,205 +148,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<style scoped>
-.projets {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-h1 {
-  color: #d946a6;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-}
-
-.subtitle {
-  color: #666;
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
-  font-weight: 500;
-}
-
-.filters {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  margin-bottom: 3rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex: 1;
-  min-width: 200px;
-}
-
-.filter-group label {
-  font-weight: 600;
-  color: #1a1a1a;
-  font-size: 0.95rem;
-}
-
-.filter-group select {
-  padding: 0.75rem;
-  border: 1px solid #e5e5e5;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  background: white;
-  color: #1a1a1a;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.filter-group select:hover {
-  border-color: #d946a6;
-}
-
-.filter-group select:focus {
-  outline: none;
-  border-color: #d946a6;
-  box-shadow: 0 0 0 3px rgba(217, 70, 166, 0.1);
-}
-
-.btn-secondary {
-  padding: 0.75rem 1.5rem;
-  background: #f9f9f9;
-  border: 1px solid #e5e5e5;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.btn-secondary:hover {
-  background: #d946a6;
-  color: white;
-  border-color: #d946a6;
-}
-
-.loading, .empty {
-  text-align: center;
-  padding: 3rem 2rem;
-  color: #999;
-  font-size: 1.05rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.projets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
-}
-
-.projet-card {
-  text-decoration: none;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.projet-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
-
-.projet-card img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.projet-card:hover img {
-  transform: scale(1.05);
-}
-
-.projet-content {
-  padding: 1.5rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.projet-content h3 {
-  color: #d946a6;
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.tag {
-  background: #f0f0f0;
-  padding: 0.35rem 0.85rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  color: #333;
-  font-weight: 500;
-}
-
-.competences {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: auto;
-}
-
-.comp-tag {
-  background: #d946a6;
-  color: white;
-  padding: 0.35rem 0.85rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .projets {
-    padding: 1.5rem 1rem;
-  }
-
-  .projets-grid {
-    grid-template-columns: 1fr;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  .filters {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .filter-group {
-    min-width: 100%;
-  }
-
-  .btn-secondary {
-    width: 100%;
-  }
-}
-</style>

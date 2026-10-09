@@ -6,11 +6,6 @@ use Modeles\Utilisateur;
 use Controller\ErrorController;
 use Exception;
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
-
-
 class UserController extends Controller
 {
 
@@ -61,8 +56,7 @@ class UserController extends Controller
                     $this->render('auth', ['errorConnexion' => $error]);
                     return;
                 }
-                session_start(); // Crée la session 
-                $_SESSION['user'] = $user; //J'accéde à la variable session, je crée une ligne appler user et j'y stock le user 
+                $_SESSION['user'] = $user; //J'accéde à la variable session, je crée une ligne appler user et j'y stock le user
                 header("Location: index.php?page=home");
             } else {
                 $error = "Email ou mot de passe incorrect.";

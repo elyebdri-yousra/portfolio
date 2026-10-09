@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { pool } from './models/db.js';
 import authRoutes from './routes/auth.js';
+import projetRoutes from './routes/projets.js';
 
 dotenv.config();
 
@@ -20,7 +21,7 @@ app.get('/api/health', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/projets', projetRoutes);
+app.use('/api/projets', projetRoutes);
 
 // Error handler
 app.use((err, req, res, next) => {

@@ -22,7 +22,10 @@
       "Bash(brew install *)",
       "Bash(php -r \"echo password_hash\\('Test123!', PASSWORD_DEFAULT\\);\")",
       "Bash(php -r \"echo password_hash\\('admin123', PASSWORD_DEFAULT\\);\")",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Read(//tmp/**)"
     ]
   }
 }

@@ -64,37 +64,60 @@ const handleRegister = async () => {
 
 <style scoped>
 .auth {
-  min-height: 60vh;
+  min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  position: relative;
+}
+
+.auth::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(217, 70, 166, 0.08) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -150px;
+  left: -150px;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .auth-container {
   background: white;
-  padding: 2rem;
-  border-radius: 8px;
+  padding: 3rem 2rem;
+  border-radius: 12px;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  position: relative;
+  z-index: 1;
 }
 
 .tabs {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #eee;
+  gap: 0;
+  margin-bottom: 2.5rem;
+  border-bottom: 2px solid #e5e5e5;
 }
 
 .tabs button {
   background: none;
   border: none;
-  padding: 1rem;
+  padding: 1rem 0;
+  margin-right: 1.5rem;
   cursor: pointer;
   color: #999;
-  font-weight: 500;
-  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.tabs button:hover {
+  color: #d946a6;
 }
 
 .tabs button.active {
@@ -105,41 +128,83 @@ const handleRegister = async () => {
 .form-section h2 {
   color: #d946a6;
   margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 input {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+input::placeholder {
+  color: #ccc;
+}
+
+input:hover {
+  border-color: #d946a6;
+  background: white;
 }
 
 input:focus {
   outline: none;
   border-color: #d946a6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(217, 70, 166, 0.1);
 }
 
 .btn {
-  padding: 0.75rem;
+  padding: 0.95rem;
   border: none;
-  border-radius: 4px;
-  font-weight: 500;
+  border-radius: 6px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
 }
 
 .btn-primary {
   background: #d946a6;
   color: white;
+  box-shadow: 0 4px 12px rgba(217, 70, 166, 0.3);
 }
 
 .btn-primary:hover {
   background: #c0209d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(217, 70, 166, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .auth {
+    padding: 1.5rem 1rem;
+  }
+
+  .auth-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .form-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .tabs button {
+    margin-right: 1rem;
+    padding: 0.75rem 0;
+  }
 }
 </style>

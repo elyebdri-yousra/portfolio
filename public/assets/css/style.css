@@ -1,0 +1,82 @@
+body{
+    background-color: #F7F5EE;
+    max-width: 1440px;
+    font-family:'Cantarell', sans-serif;
+}
+h1{
+    font-family: 'Braah One', sans-serif;
+    color: #DB9ECF;
+    font-size : 61px;
+    
+}
+h2{
+    font-family: 'Braah One', sans-serif;
+    color: #DB9ECF;
+    font-size : 49px;
+}
+h3{
+    font-family: 'Braah One', sans-serif;
+    color: #DB9ECF;
+    font-size : 28px;
+}
+
+button{
+    font-size : 25px;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+th.cursor-pointer:hover {
+    background-color: #567276;
+    transition: background-color 0.2s;
+}
+
+    #carousel img {
+        min-width: 100%;
+    }
+
+@media (max-width: 768px) {
+  .flex-col-mobile {
+    flex-direction: column !important;
+  }
+
+  .button-group-mobile > * {
+    width: 100% !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .table th,
+  .table td {
+    white-space: nowrap;
+    padding: 0.75rem !important;
+  }
+
+  .editzone td {
+    display: block;
+    width: 100%;
+  }
+
+  .editzone form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .form-action-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .form-action-mobile select,
+  .form-action-mobile button {
+    width: 100% !important;
+  }
+}

@@ -114,71 +114,101 @@ onMounted(async () => {
 
 <style scoped>
 .projets {
-  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 h1 {
   color: #d946a6;
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .subtitle {
   color: #666;
   font-size: 1.1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+  font-weight: 500;
 }
 
 .filters {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 3rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
+  align-items: flex-end;
 }
 
 .filter-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
+  min-width: 200px;
 }
 
 .filter-group label {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 0.95rem;
 }
 
 .filter-group select {
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  min-width: 200px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: white;
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-group select:hover {
+  border-color: #d946a6;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #d946a6;
+  box-shadow: 0 0 0 3px rgba(217, 70, 166, 0.1);
 }
 
 .btn-secondary {
   padding: 0.75rem 1.5rem;
-  background: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: #f9f9f9;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s;
-  align-self: flex-end;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  color: #1a1a1a;
 }
 
 .btn-secondary:hover {
-  background: #e0e0e0;
+  background: #d946a6;
+  color: white;
+  border-color: #d946a6;
 }
 
 .loading, .empty {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
   color: #999;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 .projets-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
 }
 
@@ -187,67 +217,99 @@ h1 {
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .projet-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 .projet-card img {
   width: 100%;
-  height: 200px;
+  height: 220px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.projet-card:hover img {
+  transform: scale(1.05);
 }
 
 .projet-content {
-  padding: 1rem;
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .projet-content h3 {
   color: #d946a6;
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .tag {
   background: #f0f0f0;
-  padding: 0.25rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #333;
+  font-weight: 500;
 }
 
 .competences {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: auto;
 }
 
 .comp-tag {
   background: #d946a6;
   color: white;
-  padding: 0.25rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {
+  .projets {
+    padding: 1.5rem 1rem;
+  }
+
   .projets-grid {
     grid-template-columns: 1fr;
   }
 
   h1 {
     font-size: 1.8rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    min-width: 100%;
+  }
+
+  .btn-secondary {
+    width: 100%;
   }
 }
 </style>

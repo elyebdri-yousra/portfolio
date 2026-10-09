@@ -6,25 +6,21 @@
         <button @click="activeTab = 'register'" :class="{ active: activeTab === 'register' }">Inscription</button>
       </div>
 
-      <div v-if="activeTab === 'login'" class="form-section">
+      <form v-if="activeTab === 'login'" @submit.prevent="handleLogin" class="form-section">
         <h2>Connexion</h2>
-        <form @submit.prevent="handleLogin">
-          <input v-model="loginForm.email" type="email" placeholder="Email" required>
-          <input v-model="loginForm.password" type="password" placeholder="Mot de passe" required>
-          <button type="submit" class="btn btn-primary">Se connecter</button>
-        </form>
-      </div>
+        <input v-model="loginForm.email" type="email" placeholder="Email" required>
+        <input v-model="loginForm.password" type="password" placeholder="Mot de passe" required>
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+      </form>
 
-      <div v-else class="form-section">
+      <form v-else @submit.prevent="handleRegister" class="form-section">
         <h2>Inscription</h2>
-        <form @submit.prevent="handleRegister">
-          <input v-model="registerForm.nom" type="text" placeholder="Nom" required>
-          <input v-model="registerForm.prenom" type="text" placeholder="Prénom" required>
-          <input v-model="registerForm.email" type="email" placeholder="Email" required>
-          <input v-model="registerForm.password" type="password" placeholder="Mot de passe" required>
-          <button type="submit" class="btn btn-primary">Demande d'inscription</button>
-        </form>
-      </div>
+        <input v-model="registerForm.nom" type="text" placeholder="Nom" required>
+        <input v-model="registerForm.prenom" type="text" placeholder="Prénom" required>
+        <input v-model="registerForm.email" type="email" placeholder="Email" required>
+        <input v-model="registerForm.password" type="password" placeholder="Mot de passe" required>
+        <button type="submit" class="btn btn-primary">Demande d'inscription</button>
+      </form>
     </div>
   </div>
 </template>

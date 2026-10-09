@@ -42,8 +42,8 @@ import { useAuthStore } from './stores/auth.js';
 const router = useRouter();
 const authStore = useAuthStore();
 
-onMounted(() => {
-  authStore.checkAuth();
+onMounted(async () => {
+  await authStore.checkAuth();
 });
 
 const logout = async () => {
@@ -52,19 +52,62 @@ const logout = async () => {
 };
 </script>
 
+<style>
+:root {
+  --primary: #d946a6;
+  --primary-dark: #c0209d;
+  --primary-light: #e562b8;
+  --text-dark: #1a1a1a;
+  --text-light: #666;
+  --border-color: #e5e5e5;
+  --bg-light: #f9f9f9;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-dark);
+  background: white;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+</style>
+
 <style scoped>
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: white;
 }
 
 .navbar {
   background: white;
-  padding: 1rem 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.75rem 0;
+  box-shadow: var(--shadow-md);
   position: sticky;
   top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .nav-container {
@@ -77,44 +120,78 @@ const logout = async () => {
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #d946a6;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary);
   text-decoration: none;
+  letter-spacing: -0.5px;
+  transition: color 0.3s ease;
+}
+
+.logo:hover {
+  color: var(--primary-dark);
 }
 
 .nav-menu {
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
+  margin: 0;
+}
+
+.nav-menu li {
+  position: relative;
 }
 
 .nav-menu a {
-  color: #333;
+  color: var(--text-dark);
   text-decoration: none;
-  transition: color 0.3s;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.3s ease;
+  border-radius: 4px;
 }
 
 .nav-menu a:hover {
-  color: #d946a6;
+  color: var(--primary);
+  background: rgba(217, 70, 166, 0.05);
+}
+
+.nav-menu .router-link-active {
+  color: var(--primary);
 }
 
 .admin-menu {
   position: relative;
 }
 
+.admin-menu > span {
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-menu:hover > span {
+  color: var(--primary);
+  background: rgba(217, 70, 166, 0.05);
+}
+
 .submenu {
   display: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   right: 0;
   background: white;
-  border: 1px solid #eee;
-  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   padding: 0.5rem 0;
   flex-direction: column;
   gap: 0;
+  box-shadow: var(--shadow-lg);
+  min-width: 180px;
 }
 
 .admin-menu:hover .submenu {
@@ -122,7 +199,22 @@ const logout = async () => {
 }
 
 .submenu li {
-  padding: 0.5rem 1rem;
+  padding: 0;
+}
+
+.submenu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.submenu a:hover {
+  background: var(--bg-light);
+  color: var(--primary);
+  padding-left: 1.25rem;
 }
 
 .main-content {
@@ -134,10 +226,43 @@ const logout = async () => {
 }
 
 .footer {
-  background: #f5f5f5;
+  background: var(--bg-light);
   text-align: center;
-  padding: 2rem;
-  color: #666;
-  border-top: 1px solid #eee;
+  padding: 3rem 1rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border-color);
+  margin-top: 3rem;
+}
+
+.footer p {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .nav-menu {
+    gap: 0.5rem;
+  }
+
+  .nav-menu a {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .main-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .footer {
+    padding: 2rem 1rem;
+  }
+
+  .submenu {
+    right: -50%;
+  }
 }
 </style>

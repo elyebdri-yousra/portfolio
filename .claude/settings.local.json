@@ -27,7 +27,10 @@
       "Bash(npm run *)",
       "Read(//tmp/**)",
       "Bash(npm list *)",
-      "Bash(npm ls *)"
+      "Bash(npm ls *)",
+      "Bash(curl -s http://localhost:5173/)",
+      "Bash(curl -s -X POST http://localhost:3000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"admin@test.com\",\"password\":\"admin123\"}')",
+      "Bash(node --eval ' *)"
     ]
   }
 }

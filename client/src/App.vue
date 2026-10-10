@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto flex justify-between items-center">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-3 flex-shrink-0">
-          <img :src="logoImage" alt="Yousra EL YEBDRI" class="w-14 h-14 rounded-2xl object-cover">
+          <img :src="logoImage" alt="Yousra EL YEBDRI" class="w-20 h-20 rounded-2xl object-cover">
         </router-link>
 
         <!-- Menu principal -->

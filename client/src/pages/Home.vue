@@ -13,28 +13,27 @@
         <!-- Text Content - RIGHT -->
         <div class="order-1 lg:order-2">
           <!-- Title -->
-          <h1 class="text-5xl lg:text-6xl font-bold mb-6">
-            <span class="text-accent block">EL YEBDRI</span>
-            <span class="text-primary">Yousra</span>
+          <h1 class="text-5xl lg:text-6xl font-display font-bold mb-6">
+            <span class="text-accent block">EL YEBDRI Yousra</span>
           </h1>
 
           <!-- Separator with year -->
           <div class="flex items-center gap-6 mb-12">
-            <div class="h-1 w-20 bg-primary"></div>
+            <div class="h-0.5 w-80 bg-primary"></div>
             <p class="text-5xl lg:text-6xl text-primary font-bold">2026</p>
           </div>
 
           <!-- Main text -->
           <div class="space-y-6 mb-12">
-            <p class="text-xl text-primary font-semibold">
+            <p class="text-xl text-primary font-light">
               Bienvenue sur mon portfolio !
             </p>
 
-            <p class="text-lg text-primary leading-relaxed">
+            <p class="text-lg text-primary font-light leading-relaxed">
               Je suis Yousra EL YEBDRI, étudiante en BUT Métiers du Multimédia et de l'Internet (MMI).
             </p>
 
-            <p class="text-lg text-primary leading-relaxed">
+            <p class="text-lg text-primary font-light leading-relaxed">
               Vous pourrez découvrir mon parcours, mes compétences, mes projets et me contacter
             </p>
           </div>

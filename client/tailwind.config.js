@@ -17,7 +17,11 @@ export default {
         'surface-dark': '#e0dbd6',
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
+        display: ['Braah One', 'sans-serif'],
+      },
+      fontWeight: {
+        light: '300',
       }
     },
   },

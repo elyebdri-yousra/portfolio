@@ -19,7 +19,7 @@
           </h1>
 
           <!-- Separator with year -->
-          <div class="flex flex-col items-start gap-6 mb-12">
+          <div class="flex items-center gap-6 mb-12">
             <div class="h-1 w-20 bg-primary"></div>
             <p class="text-5xl lg:text-6xl text-primary font-bold">2026</p>
           </div>

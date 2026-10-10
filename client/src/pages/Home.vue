@@ -5,13 +5,8 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <!-- Illustration - LEFT -->
         <div class="flex justify-center lg:justify-start order-2 lg:order-1">
-          <div class="relative w-80 h-80 lg:w-96 lg:h-96">
-            <!-- Outer gradient shape -->
-            <div class="absolute inset-0 bg-gradient-to-br from-accent via-accent2 to-accent3 rounded-4xl transform rotate-12"></div>
-            <!-- Inner avatar area -->
-            <div class="absolute inset-4 bg-white rounded-3xl flex items-center justify-center shadow-2xl overflow-hidden">
-              <img :src="portraitImage" alt="Yousra EL YEBDRI" class="w-full h-full object-cover">
-            </div>
+          <div class="w-96 h-96 lg:w-full lg:h-auto max-w-md">
+            <img :src="portraitImage" alt="Yousra EL YEBDRI" class="w-full h-full object-contain">
           </div>
         </div>
 
@@ -24,8 +19,8 @@
           </h1>
 
           <!-- Separator with year -->
-          <div class="flex items-center gap-6 mb-12 pb-6">
-            <div class="h-20 w-1 bg-primary"></div>
+          <div class="flex flex-col items-start gap-4 mb-12">
+            <div class="h-1 w-20 bg-primary"></div>
             <p class="text-5xl lg:text-6xl text-primary font-bold">2026</p>
           </div>
 

@@ -17,7 +17,7 @@ export default {
         'surface-dark': '#e0dbd6',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Cantarell', 'sans-serif'],
         display: ['Braah One', 'sans-serif'],
       },
       fontWeight: {

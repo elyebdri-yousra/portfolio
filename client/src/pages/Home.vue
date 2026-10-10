@@ -5,7 +5,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <!-- Illustration - LEFT -->
         <div class="flex justify-center lg:justify-start order-2 lg:order-1">
-          <div class="w-96 h-96 lg:w-full lg:h-auto max-w-md">
+          <div class="w-full h-96 lg:h-auto max-w-lg">
             <img :src="portraitImage" alt="Yousra EL YEBDRI" class="w-full h-full object-contain">
           </div>
         </div>
@@ -19,8 +19,8 @@
           </h1>
 
           <!-- Separator with year -->
-          <div class="flex flex-col items-start gap-4 mb-12">
-            <div class="h-1 w-20 bg-primary"></div>
+          <div class="flex flex-col items-start gap-2 mb-12">
+            <div class="h-1 w-24 bg-primary"></div>
             <p class="text-5xl lg:text-6xl text-primary font-bold">2026</p>
           </div>
 

@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto flex justify-between items-center">
         <!-- Logo -->
         <router-link to="/" class="flex items-center gap-3 flex-shrink-0">
-          <div class="w-14 h-14 bg-gradient-to-br from-accent via-accent2 to-accent3 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-md">Y</div>
+          <img :src="logoImage" alt="Yousra EL YEBDRI" class="w-14 h-14 rounded-2xl shadow-md object-cover">
         </router-link>
 
         <!-- Menu principal -->
@@ -54,6 +54,7 @@
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from './stores/auth.js';
+import logoImage from './assets/img/PostMe.png';
 
 const router = useRouter();
 const authStore = useAuthStore();
